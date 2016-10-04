@@ -1,0 +1,14 @@
+
+#
+# Settings for Gnucash
+#
+# This file configures various aspects of Gnucash
+# 
+
+ThinkopenAt:
+  Gnucash:
+
+    DataSource:
+      Type: 'sqlite'
+      Location: '/home/kraftb/Desktop/Buchhaltung.sqlite.gnucash'
+

@@ -1,0 +1,45 @@
+<f:layout name="Default" />
+		
+<f:section name="Title">
+	<f:if condition="{account}">
+		<f:then>
+			Accounts in "{account.name}"
+            <f:if condition="{accounts.code}">
+                ({accounts.code})
+            </f:if>
+		</f:then>
+		<f:else>
+			Root accounts
+		</f:else>
+	</f:if>
+</f:section>
+
+<f:section name="Content">
+
+	<f:if condition="{subAccounts}">
+		<ul>
+			<f:for each="{subAccounts}" as="subAccount">
+				<li>
+					<f:link.action action="index" arguments="{account: subAccount}">{subAccount.name}</f:link.action>
+				</li>
+			</f:for>
+		</ul>
+	</f:if>
+
+	<f:if condition="{transactions}">
+		<hr />
+		<ul>
+			<f:for each="{transactions}" as="transaction">
+				<li>
+					{transaction.posted} | {transaction.number} | {transaction.description}
+				</li>
+			</f:for>
+		</ul>
+	</f:if>
+
+	<f:if condition="{account}">
+		<hr />
+		<f:link.action action="index" arguments="{account: account.parent}">Back</f:link.action>
+	</f:if>
+</f:section>
+

@@ -1,0 +1,37 @@
+
+body {
+    font-family: Verdana, Helvetica, Arial;
+    font-size: 15px;
+}
+
+div.page {
+    border-top: 1px solid black;
+    margin-top: 1cm;
+}
+div.page:first-child {
+    border-top: 0px;
+}
+
+table.transaction-list {
+    width: 100%;
+    border-collapse: collapse;
+    
+}
+table.transaction-list th,
+table.transaction-list td {
+    border: 1px solid black;
+    padding: 5px 10px 5px 10px;
+}
+table.transaction-list th {
+    text-align: left;
+}
+table.transaction-list th.transaction-amount,
+table.transaction-list td.transaction-amount {
+    text-align: right;
+    white-space: nowrap;
+}
+table.transaction-list th.table-expand,
+table.transaction-list td.table-expand {
+    width: 100%;
+}
+

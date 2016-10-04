@@ -1,0 +1,28 @@
+{namespace gc=ThinkopenAt\Gnucash\ViewHelpers}
+
+<f:if condition="{transactions}">
+    <f:then>
+        <table class="transaction-list">
+            <f:render partial="TransactionHead" />
+            <f:for each="{transactions}" as="split">
+                <f:if condition="{onlyNegative}">
+                    <f:then>
+                        <f:if condition="{split.value -> gc:isNegative()}">
+                            <f:render partial="TransactionLine" arguments="{split: '{split}'}" />
+                        </f:if>
+                    </f:then>
+                    <f:else>
+                        <f:render partial="TransactionLine" arguments="{split: '{split}'}" />
+                    </f:else>
+                </f:if>
+            </f:for>
+            <f:render partial="TransactionFooter" arguments="{transactions: '{transactions}', onlyNegative: '{onlyNegative}'}" />
+        </table>
+    </f:then>
+    <f:else>
+        <p class="no-transactions">
+            Keine Buchungen
+        </p>
+    </f:else>
+</f:if>
+

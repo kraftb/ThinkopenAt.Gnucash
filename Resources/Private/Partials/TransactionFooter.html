@@ -1,0 +1,16 @@
+{namespace gc=ThinkopenAt\Gnucash\ViewHelpers}
+
+<tr>
+    <th colspan="3" class="table-expand transaction-amount">Summe : </th>
+    <th class="transaction-amount">
+        <f:if condition="{onlyNegative}">
+            <f:then>
+                <gc:accumulateSplits field="quantity" abs="1" sign="-">{transactions}</gc:accumulateSplits> &euro;
+            </f:then>
+            <f:else>
+                <gc:accumulateSplits field="quantity" abs="1">{transactions}</gc:accumulateSplits> &euro;
+            </f:else>
+        </f:if>
+    </th>
+</tr>
+

@@ -1,0 +1,62 @@
+{namespace gc=ThinkopenAt\Gnucash\ViewHelpers}
+
+<html>
+    <head>
+        <title>Umsatzsteuer Voranmeldung</title>
+        <link rel="stylesheet" type="text/css" href="{f:uri.resource(path: 'Css/VatDeclaration.css')}" />
+    </head>
+    <body>
+        <div class="page">
+            <h1>{company} ({tax-id-orig})</h1>
+            <h2>Umsatzsteuervoranmeldung und Zusammenfassende Meldung</h2>
+            <h2>Q{quarter} / {year}</h2>
+            <p>
+                Errechneter Betrag für zu leistende Umsatzsteuer Vorauszahlung
+            </p>
+            <h2>
+                <gc:accumulateSplits field="quantity" abs="1">{vatAt}</gc:accumulateSplits>
+                -
+                (
+                <gc:accumulateSplits field="quantity" abs="1">{vat10}</gc:accumulateSplits>
+                +
+                <gc:accumulateSplits field="quantity" abs="1">{vat20}</gc:accumulateSplits>
+                ) = 
+                <gc:sum>
+                        <gc:accumulateSplits field="quantity" abs="1">{vatAt}</gc:accumulateSplits>
+                        + -<gc:accumulateSplits field="quantity" abs="1">{vat10}</gc:accumulateSplits>
+                        + -<gc:accumulateSplits field="quantity" abs="1">{vat20}</gc:accumulateSplits>
+                </gc:sum>
+                &euro;
+            </h2>
+        </div>
+        <div class="page">
+            <h1>Einnahmen AT</h1>
+            <f:render partial="TransactionList" arguments="{transactions: '{incomeAt}'}" />
+        </div>
+        <div class="page">
+            <h1>Einnahmen EU</h1>
+            <f:render partial="TransactionList" arguments="{transactions: '{incomeEu}'}" />
+        </div>
+        <div class="page">
+            <h1>Einnahmen WW</h1>
+            <f:render partial="TransactionList" arguments="{transactions: '{incomeWw}'}" />
+        </div>
+        <div class="page">
+            <h1>Abzuführende Umsatzsteuer (20%)</h1>
+            <f:render partial="TransactionList" arguments="{transactions: '{vatAt}'}" />
+        </div>
+        <div class="page">
+            <h1>Vorsteuer (10%)</h1>
+            <f:render partial="TransactionList" arguments="{transactions: '{vat10}'}" />
+        </div>
+        <div class="page">
+            <h1>Vorsteuer (20%)</h1>
+            <f:render partial="TransactionList" arguments="{transactions: '{vat20}'}" />
+        </div>
+        <div class="page">
+            <h1>Lieferungen und Leistungen Währungsunion</h1>
+            <f:render partial="TransactionList" arguments="{transactions: '{purchaseEu}', onlyNegative: 1}" />
+        </div>
+    </body>
+</html>
+

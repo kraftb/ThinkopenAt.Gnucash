@@ -1,0 +1,49 @@
+{namespace gc=ThinkopenAt\Gnucash\ViewHelpers}
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Umsatzsteuervoranmeldung {company} -->
+<ERKLAERUNGS_UEBERMITTLUNG>
+	<INFO_DATEN>
+		<ART_IDENTIFIKATIONSBEGRIFF>FASTNR</ART_IDENTIFIKATIONSBEGRIFF>
+		<IDENTIFIKATIONSBEGRIFF>{tax-id}</IDENTIFIKATIONSBEGRIFF>
+		<PAKET_NR>{data-hash}</PAKET_NR>
+		<DATUM_ERSTELLUNG type="datum"><f:format.date format="Y-m-d">{now}</f:format.date></DATUM_ERSTELLUNG>
+		<UHRZEIT_ERSTELLUNG type="uhrzeit"><f:format.date format="H:i:s">{now}</f:format.date></UHRZEIT_ERSTELLUNG>
+		<ANZAHL_ERKLAERUNGEN>{f:if(condition: '{ZusammenfassendeMeldung}', then: '2', else: '1')}</ANZAHL_ERKLAERUNGEN>
+	</INFO_DATEN>
+	<ERKLAERUNG art="U30">
+		<SATZNR>1</SATZNR>
+		<ALLGEMEINE_DATEN>
+			<ANBRINGEN>U30</ANBRINGEN>
+			<ZRVON type="jahrmonat"><f:format.date format="Y-m">{begin}</f:format.date></ZRVON>
+			<ZRBIS type="jahrmonat"><f:format.date format="Y-m">{endQuarter}</f:format.date></ZRBIS>
+			<FASTNR>{tax-id}</FASTNR>
+			<KUNDENINFO>{company}</KUNDENINFO>
+		</ALLGEMEINE_DATEN>
+		<LIEFERUNGEN_LEISTUNGEN_EIGENVERBRAUCH>
+			<KZ000 type="kz"><gc:sum>
+                <gc:accumulateSplits field="quantity" abs="1">{incomeAt}</gc:accumulateSplits> +
+                <gc:accumulateSplits field="quantity" abs="1">{incomeEu}</gc:accumulateSplits> +
+                <gc:accumulateSplits field="quantity" abs="1">{incomeWw}</gc:accumulateSplits>
+            </gc:sum></KZ000>
+			<STEUERFREI><f:if condition="{incomeWw -> f:count()}">
+				<KZ011 type="kz"><gc:accumulateSplits field="quantity" abs="1">{incomeWw}</gc:accumulateSplits></KZ011></f:if><f:if condition="{incomeEu -> f:count()}">
+				<KZ017 type="kz"><gc:accumulateSplits field="quantity" abs="1">{incomeEu}</gc:accumulateSplits></KZ017></f:if>
+			</STEUERFREI>
+			<VERSTEUERT>
+				<KZ022 type="kz"><gc:accumulateSplits field="quantity" abs="1">{incomeAt}</gc:accumulateSplits></KZ022>
+			</VERSTEUERT>
+		</LIEFERUNGEN_LEISTUNGEN_EIGENVERBRAUCH>
+		<INNERGEMEINSCHAFTLICHE_ERWERBE>
+			<KZ070 type="kz"><gc:accumulateSplits field="quantity" abs="1" sign="-">{purchaseEu}</gc:accumulateSplits></KZ070>
+			<VERSTEUERT_IGE>
+				<KZ072 type="kz"><gc:accumulateSplits field="quantity" abs="1" sign="-">{purchaseEu}</gc:accumulateSplits></KZ072>
+			</VERSTEUERT_IGE>
+		</INNERGEMEINSCHAFTLICHE_ERWERBE>
+		<VORSTEUER>
+			<KZ060 type="kz"><gc:sum>
+                <gc:accumulateSplits field="quantity" abs="1">{vat20}</gc:accumulateSplits>
+            </gc:sum></KZ060>
+			<KZ065 type="kz"><gc:accumulateSplits field="quantity" abs="1">{vatEu}</gc:accumulateSplits></KZ065>
+		</VORSTEUER>
+	</ERKLAERUNG>
+</ERKLAERUNGS_UEBERMITTLUNG>

@@ -1,0 +1,20 @@
+{namespace gc=ThinkopenAt\Gnucash\ViewHelpers}
+
+<tr>
+    <td>
+        <f:format.date format="Y-m-d">{split.transaction.postDate}</f:format.date>
+    </td>
+    <td>
+        {split.transaction.number}
+    </td>
+    <td class="table-expand">
+        {split.transaction.description}
+        <f:if condition="{split.memo}">
+            ({split.memo})
+        </f:if>
+    </td>
+    <td class="transaction-amount">
+        <gc:absoluteValue>{split.value}</gc:absoluteValue>
+    </td>
+</tr>
+

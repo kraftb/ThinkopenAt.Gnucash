@@ -1,0 +1,13 @@
+{
+    "name": "thinkopenat/gnucash",
+    "type": "typo3-flow-package",
+    "description": "Add description here",
+    "require": {
+        "typo3/flow": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "ThinkopenAt\\Gnucash": "Classes"
+        }
+    }
+}
