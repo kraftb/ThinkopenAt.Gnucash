@@ -14,7 +14,7 @@
                 Errechneter Betrag für zu leistende Umsatzsteuer Vorauszahlung
             </p>
             <h2>
-                <gc:accumulateSplits field="quantity" abs="1">{vatAt}</gc:accumulateSplits>
+                <gc:accumulateSplits field="quantity" abs="1" sign="-">{vatAt}</gc:accumulateSplits>
                 -
                 (
                 <gc:accumulateSplits field="quantity" abs="1">{vat10}</gc:accumulateSplits>
@@ -22,7 +22,7 @@
                 <gc:accumulateSplits field="quantity" abs="1">{vat20}</gc:accumulateSplits>
                 ) = 
                 <gc:sum>
-                        <gc:accumulateSplits field="quantity" abs="1">{vatAt}</gc:accumulateSplits>
+                        <gc:accumulateSplits field="quantity" abs="1" sign="-">{vatAt}</gc:accumulateSplits>
                         + -<gc:accumulateSplits field="quantity" abs="1">{vat10}</gc:accumulateSplits>
                         + -<gc:accumulateSplits field="quantity" abs="1">{vat20}</gc:accumulateSplits>
                 </gc:sum>
@@ -43,7 +43,7 @@
         </div>
         <div class="page">
             <h1>Abzuführende Umsatzsteuer (20%)</h1>
-            <f:render partial="TransactionList" arguments="{transactions: '{vatAt}'}" />
+            <f:render partial="TransactionList" arguments="{transactions: '{vatAt}', onlyNegative: 1}" />
         </div>
         <div class="page">
             <h1>Vorsteuer (10%)</h1>
@@ -57,6 +57,12 @@
             <h1>Lieferungen und Leistungen Währungsunion</h1>
             <f:render partial="TransactionList" arguments="{transactions: '{purchaseEu}', onlyNegative: 1}" />
         </div>
+        <f:if condition='{ZusammenfassendeMeldung}'>
+            <div class="page">
+                <h1>Zusammenfassende Meldung</h1>
+                <f:render partial="EuCustomersList" arguments="{incomeEu: '{incomeEu}'}" />
+            </div>
+        </f:if>
     </body>
 </html>
 

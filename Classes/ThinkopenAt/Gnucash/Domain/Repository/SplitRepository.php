@@ -37,7 +37,7 @@ class SplitRepository extends Repository {
         $query->setOrderings($orderings);
 
         $constraints[] = $query->greaterThanOrEqual('transaction.postDate', $begin);
-        $constraints[] = $query->lessThan('transaction.postDate', $end);
+        $constraints[] = $query->lessThanOrEqual('transaction.postDate', $end);
         $constraints[] = $query->in('account', $accounts->toArray());
 
         $query->matching($query->logicalAnd($constraints));

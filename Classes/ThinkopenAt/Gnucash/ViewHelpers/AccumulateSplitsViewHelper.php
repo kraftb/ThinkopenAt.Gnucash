@@ -62,7 +62,11 @@ class AccumulateSplitsViewHelper extends AbstractViewHelper {
                 $sum->add($value);
             }
         }
-		return (string)$sum;
+        $sum = (string)$sum;
+        if (substr($sum, 0, 1) === '.') {
+            $sum = '0' . $sum;
+        }
+		return $sum;
 	}
 
 }

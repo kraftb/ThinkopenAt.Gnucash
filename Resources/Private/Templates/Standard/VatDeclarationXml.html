@@ -1,5 +1,4 @@
-{namespace gc=ThinkopenAt\Gnucash\ViewHelpers}
-<?xml version="1.0" encoding="iso-8859-1"?>
+{namespace gc=ThinkopenAt\Gnucash\ViewHelpers}<?xml version="1.0" encoding="iso-8859-1"?>
 <!-- Umsatzsteuervoranmeldung {company} -->
 <ERKLAERUNGS_UEBERMITTLUNG>
 	<INFO_DATEN>
@@ -8,7 +7,7 @@
 		<PAKET_NR>{data-hash}</PAKET_NR>
 		<DATUM_ERSTELLUNG type="datum"><f:format.date format="Y-m-d">{now}</f:format.date></DATUM_ERSTELLUNG>
 		<UHRZEIT_ERSTELLUNG type="uhrzeit"><f:format.date format="H:i:s">{now}</f:format.date></UHRZEIT_ERSTELLUNG>
-		<ANZAHL_ERKLAERUNGEN>{f:if(condition: '{ZusammenfassendeMeldung}', then: '2', else: '1')}</ANZAHL_ERKLAERUNGEN>
+		<ANZAHL_ERKLAERUNGEN>1</ANZAHL_ERKLAERUNGEN>
 	</INFO_DATEN>
 	<ERKLAERUNG art="U30">
 		<SATZNR>1</SATZNR>
@@ -41,7 +40,8 @@
 		</INNERGEMEINSCHAFTLICHE_ERWERBE>
 		<VORSTEUER>
 			<KZ060 type="kz"><gc:sum>
-                <gc:accumulateSplits field="quantity" abs="1">{vat20}</gc:accumulateSplits>
+                <gc:accumulateSplits field="quantity" abs="1">{vat20}</gc:accumulateSplits> +
+                <gc:accumulateSplits field="quantity" abs="1">{vat10}</gc:accumulateSplits>
             </gc:sum></KZ060>
 			<KZ065 type="kz"><gc:accumulateSplits field="quantity" abs="1">{vatEu}</gc:accumulateSplits></KZ065>
 		</VORSTEUER>

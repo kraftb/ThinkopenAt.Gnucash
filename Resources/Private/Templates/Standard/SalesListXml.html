@@ -1,0 +1,35 @@
+{namespace gc=ThinkopenAt\Gnucash\ViewHelpers}<f:if condition='{ZusammenfassendeMeldung}'><f:then><?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Zusammenfassende Meldung {company} -->
+<ERKLAERUNGS_UEBERMITTLUNG>
+	<INFO_DATEN>
+		<ART_IDENTIFIKATIONSBEGRIFF>FASTNR</ART_IDENTIFIKATIONSBEGRIFF>
+		<IDENTIFIKATIONSBEGRIFF>{tax-id}</IDENTIFIKATIONSBEGRIFF>
+		<PAKET_NR>{data-hash}</PAKET_NR>
+		<DATUM_ERSTELLUNG type="datum"><f:format.date format="Y-m-d">{now}</f:format.date></DATUM_ERSTELLUNG>
+		<UHRZEIT_ERSTELLUNG type="uhrzeit"><f:format.date format="H:i:s">{now}</f:format.date></UHRZEIT_ERSTELLUNG>
+		<ANZAHL_ERKLAERUNGEN>1</ANZAHL_ERKLAERUNGEN>
+	</INFO_DATEN>
+    <ERKLAERUNG art="U13">
+        <SATZNR>2</SATZNR>
+        <ALLGEMEINE_DATEN>
+            <ANBRINGEN>U13</ANBRINGEN>
+            <ZRVON type="jahrmonat"><f:format.date format="Y-m">{begin}</f:format.date></ZRVON>
+            <ZRBIS type="jahrmonat"><f:format.date format="Y-m">{endQuarter}</f:format.date></ZRBIS>
+            <FASTNR>{tax-id}</FASTNR>
+            <KUNDENINFO>{company}</KUNDENINFO>
+        </ALLGEMEINE_DATEN>
+        <f:groupedFor each="{incomeEu}" as="splitsEu" groupBy="account" groupKey="account">
+            <ZM>
+                <UID_MS>{account.description}</UID_MS>
+                <SUM_BGL type="kz"><gc:accumulateSplits field="quantity" abs="1">{splitsEu}</gc:accumulateSplits></SUM_BGL>
+                <DREIECK>0</DREIECK>
+                <SOLEI>1</SOLEI>
+            </ZM>
+        </f:groupedFor>
+    </ERKLAERUNG>
+</ERKLAERUNGS_UEBERMITTLUNG>
+    </f:then>
+    <f:else>
+Keine Zusammenfassende Meldung notwendig!
+    </f:else>
+</f:if>

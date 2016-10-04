@@ -1,0 +1,9 @@
+{namespace gc=ThinkopenAt\Gnucash\ViewHelpers}
+
+<table class="transaction-list">
+    <f:render partial="EuCustomersHead" />
+    <gc:groupedFor each="{incomeEu}" as="groupedIncomeEu" groupBy="account" groupKey="account" index="index">
+        <f:render partial="EuCustomersLine" arguments="{splits: '{groupedIncomeEu}', index: '{index}', account: '{account}'}" />
+    </gc:groupedFor>
+</table>
+

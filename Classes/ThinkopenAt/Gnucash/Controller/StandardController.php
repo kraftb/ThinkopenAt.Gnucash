@@ -58,8 +58,24 @@ class StandardController extends ActionController {
 	 * @return void
 	 */
 	public function vatDeclarationXmlAction() {
+        $this->controllerContext->getResponse()->setHeader('Content-Type', 'text/xml');
+        return $this->vatDeclarationAction();
+	}
+
+	/**
+	 * @return void
+	 */
+	public function salesListXmlAction() {
+        $this->controllerContext->getResponse()->setHeader('Content-Type', 'text/xml');
+        return $this->vatDeclarationAction();
+    }
+
+	/**
+	 * @return void
+	 */
+	public function vatDeclarationAction() {
         $year = 2016;
-        $quarter = 2;
+        $quarter = 3;
         $company = $this->settings['Setup']['CompanyName'];
         $taxId = $this->settings['Setup']['TaxId'];
 
@@ -120,13 +136,6 @@ class StandardController extends ActionController {
         );
         $dataHash = hexdec(substr(sha1(serialize($taxData)), 0, 6)) % 1000000000;
         $this->view->assign('data-hash', $dataHash);
-	}
-
-	/**
-	 * @return void
-	 */
-	public function vatDeclarationAction() {
-        return $this->vatDeclarationXmlAction();
     }
 
     /**
