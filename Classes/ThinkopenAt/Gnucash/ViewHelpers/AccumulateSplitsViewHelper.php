@@ -39,7 +39,7 @@ class AccumulateSplitsViewHelper extends AbstractViewHelper {
 		if ($splits === NULL) {
             $splits = $this->renderChildren();
 		}
-        $sum = $this->objectManager->get('ThinkopenAt\Gnucash\Domain\Type\Fraction');
+        $sum = $this->objectManager->get('ThinkopenAt\Gnucash\Domain\Type\Fraction', 0, 0);
 
         switch ($field) {
             case 'quantity':
