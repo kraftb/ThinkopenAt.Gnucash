@@ -33,6 +33,12 @@ class StandardController extends ActionController {
 	protected $transactionRepository = NULL;
 
 	/**
+	 * @Flow\Inject
+	 * @var \ThinkopenAt\Gnucash\Domain\Repository\CustomerRepository
+	 */
+	protected $customerRepository = NULL;
+
+	/**
 	 * @var array
 	 * @Flow\Inject(setting="Setup")
 	 */
@@ -165,6 +171,39 @@ class StandardController extends ActionController {
         }
         return new \DateTime($year.'-'.$month.'-1 0:00');
     }
+
+	/**
+	 * @return void
+	 */
+	public function billCustomerAction() {
+        $this->view->assign('now', new \DateTime());
+        $this->view->assign('customerOptions', $this->getCustomerOptions());
+	}
+
+	/**
+     * Returns options of available customers
+     *
+	 * @return array All available customers
+	 */
+    protected function getCustomerOptions() {
+        $customers = $this->customerRepository->findAll();
+        $result = array();
+        foreach ($customers as $customer) {
+            $result[$customer->getIdentifier()] = $customer;
+        }
+        return $result;
+    }
+
+	/**
+     * Handler action for creating a new bill handling the posted $newBill data.
+     *
+     * @param \ThinkopenAt\Gnucash\Domain\Dto\Bill $newBill: New bill which to create
+	 * @return void
+	 */
+	public function createBillAction(\ThinkopenAt\Gnucash\Domain\Dto\Bill $newBill) {
+var_dump($newBill);
+exit();
+	}
 
 }
 

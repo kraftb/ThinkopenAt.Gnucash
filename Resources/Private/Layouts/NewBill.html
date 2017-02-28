@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title><f:render section="Title" /></title>
+		<f:base />
+	</head>
+	<body>
+		<f:flashMessages class="flashmessages" />
+
+		<f:form action="createBill" objectName="newBill">
+			<h1><f:render section="Title" />: <f:render section="TitleBillData" /></h1>
+			<f:render section="BillData" />
+
+			<h1><f:render section="Title" />: <f:render section="TitleBillEntries" /></h1>
+			<f:render section="BillEntries" />
+
+			<f:render section="Buttons" />
+		</f:form>
+
+		<f:render section="Scripts" />
+	</body>
+</html>

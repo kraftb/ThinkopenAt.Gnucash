@@ -261,6 +261,8 @@ class Split {
      */
     public function setValue(\ThinkopenAt\Gnucash\Domain\Type\Fraction $value) {
         $this->value = $value;
+        $this->value_num = $value->getNumerator();
+        $this->value_denom = $value->getDenominator();
     }
 
     /**

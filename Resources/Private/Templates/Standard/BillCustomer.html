@@ -1,0 +1,103 @@
+
+<f:layout name="NewBill" />
+
+<f:section name="Title">Ausgangsrechnung erfassen</f:section>
+<f:section name="TitleBillData">Rechnungsdaten</f:section>
+<f:section name="TitleBillEntries">Erbrachte Leistungen</f:section>
+
+<f:section name="BillData">
+	<table>
+		<tr>
+			<th>Rechnungsdatum</th>
+			<td>
+				<f:form.textfield name="newBill[invoice][opened]" value="{f:format.date(date: now, format: 'Y-m-d')}" size="10" class="dateField itemField" />
+			</td>
+		</tr>
+		<tr>
+			<th>Rechnungsnummer</th>
+			<td>
+				<f:form.textfield name="newBill[invoice][id]" value="{f:format.date(date: now, format: 'Y')}/..." size="10" class="itemField" />
+			</td>
+		</tr>
+		<tr>
+			<th>Kunde</th>
+			<td>
+				<f:form.select name="newBill[invoice][owner]" class="itemField" options="{customerOptions}" />
+			</td>
+		</tr>
+		<tr>
+			<th>Leistungszeitraum: Von</th>
+			<td>
+				<f:form.textfield name="newBill[serviceBegin]" value="{f:format.date(date: now, format: 'Y-m-d')}" size="10" class="itemField dateField" />
+			</td>
+		</tr>
+		<tr>
+			<th>Leistungszeitraum: Bis</th>
+			<td>
+				<f:form.textfield name="newBill[serviceEnd]" value="{f:format.date(date: now, format: 'Y-m-d')}" size="10" class="itemField dateField" />
+			</td>
+		</tr>
+	</table>
+</f:section>
+
+<f:section name="BillEntries">
+	<table class="bill-entries">
+		<thead>
+			<tr>
+				<th>Posten</th>
+				<th>Bezeichnung</th>
+				<th>Anzahl</th>
+				<th>Preis</th>
+				<th>Netto</th>
+			</tr>
+		</thead>
+		<tbody id="itemsContainer">
+			<tr class="bill_entry" id="item_template" style="display: none; vertical-align: top;">
+				<td>
+					<!-- Posten -->
+					<f:form.textfield name="newBill[entries][*][index]" value="0" size="4" class="itemField bill-entry-index" disabled="disabled" />
+				</td>
+				<td>
+					<!-- Bezeichnung -->
+					<f:form.textarea name="newBill[entries][*][description]" value="" rows="6" cols="40" class="itemField bill-entry-description" />
+				</td>
+				<td>
+					<!-- Anzahl -->
+					<f:form.textarea name="newBill[entries][*][quantity]" value="" rows="4" cols="30" class="itemField bill-entry-amount" />
+					<br />
+					<f:form.select name="newBill[entries][*][action]" options="{Hours: 'h', Project: 'Pauschale', f: 'Freitext'}" class="itemField bill-entry-amountUnit" />
+				</td>
+				<td>
+					<!-- Preis -->
+					<f:form.textfield name="newBill[entries][*][price]" value="0.00" size="10" class="itemField priceField bill-entry-price" />
+					<br />
+					<f:form.select name="newBill[entries][*][priceUnit]" options="{euro: '€', eph: '€/h'}" class="itemField bill-entry-priceUnit" />
+				</td>
+				<td>
+					<!-- Netto -->
+					<f:form.textfield name="newBill[entries][*][net]" value="0.00" size="10" class="itemField priceField bill-entry-net" />
+					<br />
+					<f:form.button type="button" class="calculateNet itemField" name="newBill[entries][*][calculateNet]">Berechnen</f:form.button>
+				</td>
+			</tr>
+		<tbody>
+	</table>
+</f:section>
+
+<f:section name="Buttons">
+	<br />
+	<f:form.button type="button" id="addLine" name="addLine">Add line</f:form.button>
+	<br />
+	<br />
+	<f:form.submit name="Create" value="Create" />
+</f:section>
+
+<f:section name="Scripts">
+	<script type="text/javascript" src="{f:uri.resource(path: 'Libraries/jquery/jquery-1.9.1.min.js', package: 'TYPO3.Welcome')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/TimeFlies.js', package: 'ThinkopenAt.TimeFlies')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/dateField.js', package: 'ThinkopenAt.TimeFlies')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/lineHandling-gnucashBillItem.js')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/lineHandling.js', package: 'ThinkopenAt.TimeFlies')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/newBill.js')}"></script>
+</f:section>
+
