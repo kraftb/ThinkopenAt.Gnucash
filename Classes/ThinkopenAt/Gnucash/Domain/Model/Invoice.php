@@ -8,13 +8,14 @@ namespace ThinkopenAt\Gnucash\Domain\Model;
 
 use TYPO3\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * This domain model represents an GnuCash account.
  *
  * @Flow\Entity
  */
-class Invoice {
+class Invoice extends AbstractGnucashModel {
 
 	/**
 	 * Invoice id (Rechnungsnummer)
@@ -55,6 +56,7 @@ class Invoice {
 	 * The currency of this invoice
 	 *
 	 * @var \ThinkopenAt\Gnucash\Domain\Model\Currency
+     * @ORM\ManyToOne
 	 */	
 	protected $currency = NULL;
 
@@ -68,7 +70,9 @@ class Invoice {
 	/**
 	 * The owner of this invoice
 	 *
-	 * @var \ThinkopenAt\Gnucash\Domain\Model\Owner
+	 * @var \ThinkopenAt\Gnucash\Domain\Model\Customer
+     * @ORM\ManyToOne
+     * @Flow\Lazy
 	 */	
 	protected $owner = NULL;
 
@@ -76,6 +80,7 @@ class Invoice {
 	 * Bill terms for this invoice
 	 *
 	 * @var \ThinkopenAt\Gnucash\Domain\Model\Billterm
+     * @ORM\ManyToOne
 	 */	
 	protected $terms = NULL;
 
@@ -91,6 +96,7 @@ class Invoice {
 	 *
 	 * @var \ThinkopenAt\Gnucash\Domain\Model\Transaction
 	 * @ORM\Column(name="post_txn")
+     * @ORM\OneToOne(cascade={"persist"})
 	 */	
 	protected $transaction = NULL;
 
@@ -99,6 +105,7 @@ class Invoice {
 	 *
 	 * @var \ThinkopenAt\Gnucash\Domain\Model\Lot
 	 * @ORM\Column(name="post_lot")
+     * @ORM\OneToOne(cascade={"persist"})
 	 */	
 	protected $lot = NULL;
 
@@ -107,6 +114,7 @@ class Invoice {
 	 *
 	 * @var \ThinkopenAt\Gnucash\Domain\Model\Account
 	 * @ORM\Column(name="post_acc")
+     * @ORM\ManyToOne
 	 */	
 	protected $account = NULL;
 
@@ -141,10 +149,18 @@ class Invoice {
 	/**
 	 * The charge amount for this invoice
 	 *
-	 * @var ThinkopenAt\Gnucash\Domain\Type\Fraction
+	 * @var \ThinkopenAt\Gnucash\Domain\Type\Fraction
      * @Flow\Transient
 	 */
 	protected $chargeAmount = NULL;
+
+	/**
+	 * The entries for this invoice
+	 *
+     * @var Collection<\ThinkopenAt\Gnucash\Domain\Model\InvoiceEntry>
+     * @ORM\OneToMany(mappedBy="invoice", cascade={"persist"})
+	 */
+	protected $entries = NULL;
 
 
     /**
@@ -294,7 +310,7 @@ class Invoice {
     /**
      * Returns the owner (vendor/customer) for this invoice
      *
-	 * @return \ThinkopenAt\Gnucash\Domain\Model\Owner The vendor/customer of this invoice
+	 * @return \ThinkopenAt\Gnucash\Domain\Model\Customer The vendor/customer of this invoice
      */
     public function getOwner() {
         return $this->owner;
@@ -303,10 +319,10 @@ class Invoice {
     /**
      * Sets the owner (vendor/customer) for this invoice
      *
-	 * @param \ThinkopenAt\Gnucash\Domain\Model\Owner $owner: The vendor/customer of this invoice
+	 * @param \ThinkopenAt\Gnucash\Domain\Model\Customer $owner: The vendor/customer of this invoice
      * @return void
      */
-    public function setOwner(\ThinkopenAt\Gnucash\Domain\Model\Owner $owner) {
+    public function setOwner(\ThinkopenAt\Gnucash\Domain\Model\Customer $owner) {
         $this->owner = $owner;
     }
 
@@ -464,8 +480,23 @@ class Invoice {
         $this->charge_amount_denom = $chargeAmount->getDenominator();
     }
 
-    public function __toString() {
-        return $this->Persistence_Object_Identifier;
+    /**
+     * Returns the entries for this invoice
+     *
+     * @return Collection<\ThinkopenAt\Gnucash\Domain\Model\InvoiceEntry> The entries for this invoice
+     */
+    public function getEntries() {
+        return $this->entries;
+    }
+
+    /**
+     * Sets the entries for this invoice
+     *
+     * @param Collection<\ThinkopenAt\Gnucash\Domain\Model\InvoiceEntry> $entries: The entries for this invoice
+     * @return void
+     */
+    public function setEntries(Collection $entries) {
+        $this->entries = $entries;
     }
 
 }

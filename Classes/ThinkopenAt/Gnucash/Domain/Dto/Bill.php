@@ -14,13 +14,14 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Flow\Entity
  */
-class Bill {
+class Bill extends \ThinkopenAt\Gnucash\Domain\Model\AbstractGnucashModel {
 
 	/**
 	 * The invoice data set
 	 *
 	 * @var \ThinkopenAt\Gnucash\Domain\Model\Invoice
 	 * @ORM\OneToOne
+     * @Flow\Lazy
 	 */	 
 	protected $invoice = NULL;
 
@@ -41,7 +42,7 @@ class Bill {
 	/**
 	 * The bill entries
 	 *
-	 * @var \SplObjectStorage<\ThinkopenAt\Gnucash\Domain\Dto\BillEntry>
+	 * @var \Doctrine\Common\Collections\Collection<\ThinkopenAt\Gnucash\Domain\Dto\BillEntry>
 	 */	 
 	protected $entries = NULL;
 
@@ -106,7 +107,7 @@ class Bill {
     /**
      * Returns the entries for this bill
      * 
-	 * @return \SplObjectStorage The entries for this bill
+	 * @return \Doctrine\Common\Collections\Collection The entries for this bill
      */
     public function getEntries() {
         return $this->entries;
@@ -115,10 +116,10 @@ class Bill {
     /**
      * Sets the entries for this bill
      * 
-	 * @param \SplObjectStorage $entries: The entries for this bill
+	 * @param \Doctrine\Common\Collections\Collection $entries: The entries for this bill
      * @return void
      */
-    public function setEntries(\SplObjectStorage $entries) {
+    public function setEntries(\Doctrine\Common\Collections\Collection $entries) {
         $this->entries = $entries;
     }
 

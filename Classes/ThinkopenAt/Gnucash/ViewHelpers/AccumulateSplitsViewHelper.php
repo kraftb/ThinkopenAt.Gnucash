@@ -51,16 +51,22 @@ class AccumulateSplitsViewHelper extends AbstractViewHelper {
         }
 
         $method = 'get' . ucfirst($field);
+// \TYPO3\Flow\var_dump('splits:' . count($splits));
         foreach ($splits as $split) {
             $value = $split->$method();
+// \TYPO3\Flow\var_dump($value);
             if ($sign === '+' && !$value->isPositive() || $sign === '-' && $value->isPositive()) {
                 continue;
             }
             if ($abs) {
+// \TYPO3\Flow\var_dump('abs');
                 $sum->add($value->abs());
             } else {
+// \TYPO3\Flow\var_dump('non-abs');
                 $sum->add($value);
             }
+// \TYPO3\Flow\var_dump('sum');
+// \TYPO3\Flow\var_dump($value);
         }
         $sum = (string)$sum;
         if (substr($sum, 0, 1) === '.') {

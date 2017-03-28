@@ -8,6 +8,7 @@ namespace ThinkopenAt\Gnucash\Domain\Model;
 
 use TYPO3\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * This domain model represents a transaction of a GnuCash transaction.
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Flow\Entity
  */
-class Transaction {
+class Transaction extends AbstractGnucashModel {
 
 	/**
 	 * The "main" currency used by this transaction.
@@ -35,12 +36,9 @@ class Transaction {
      * splits so the appropriate "values" can get calculated. The "value" fields of all
      * splits in a transaction thus have to sum up to "0".
      *
-     * @todo: Create a doamin model for currencies
-	 * _var \ThinkopenAt\Gnucash\Domain\Model\Currency
-	 * _ORM\ManyToOne
-	 * _Flow\Lazy
 	 *
-     * @var string
+	 * @var \ThinkopenAt\Gnucash\Domain\Model\Currency
+     * @ORM\ManyToOne
 	 */	 
 	protected $currency = '';
 
@@ -54,7 +52,6 @@ class Transaction {
 	/**
 	 * The date to which this transaction is posted
 	 *
-	 * @ORM\Column(name="post_date")
 	 * @var \DateTime
 	 */	 
 	protected $postDate = NULL;
@@ -62,7 +59,6 @@ class Transaction {
 	/**
 	 * The date at which this transaction was entered
 	 *
-	 * @ORM\Column(name="enter_date")
 	 * @var \DateTime
 	 */	 
 	protected $enterDate = NULL;
@@ -73,6 +69,14 @@ class Transaction {
      * @var string
 	 */	 
 	protected $description = '';
+
+	/**
+	 * The splits of this transaction
+	 *
+     * @var Collection<\ThinkopenAt\Gnucash\Domain\Model\Split>
+     * @ORM\OneToMany(mappedBy="transaction", cascade={"persist"})
+	 */	 
+	protected $splits = NULL;
 
     /**
      * Returns the currency of this transaction
@@ -167,6 +171,25 @@ class Transaction {
      */
     public function setDescription($description) {
         $this->description = $description;
+    }
+
+    /**
+     * Returns the splits of this transaction
+     *
+     * @return Collection<\ThinkopenAt\Gnucash\Domain\Model\Split> The splits of this transaction
+     */
+    public function getSplits() {
+        return $this->splits;
+    }
+
+    /**
+     * Sets the splits of this transaction
+     *
+     * @param Collection<\ThinkopenAt\Gnucash\Domain\Model\Split> $splits: The splits of this transaction
+     * @return void
+     */
+    public function setSplits(Collection $splits) {
+        $this->splits = $splits;
     }
 
 }

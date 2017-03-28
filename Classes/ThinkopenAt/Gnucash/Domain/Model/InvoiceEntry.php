@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Flow\Entity
  */
-class InvoiceEntry {
+class InvoiceEntry extends AbstractGnucashModel {
 
 	/**
 	 * The date for this invoice entry
@@ -77,6 +77,7 @@ class InvoiceEntry {
 	 * The account for this invoice entry
 	 *
 	 * @var \ThinkopenAt\Gnucash\Domain\Model\Account
+     * @ORM\ManyToOne
 	 */
 	protected $account = NULL;
 
@@ -128,6 +129,7 @@ class InvoiceEntry {
 	 * The invoice of this invoice entry
 	 *
 	 * @var \ThinkopenAt\Gnucash\Domain\Model\Invoice
+     * @ORM\ManyToOne
 	 */
 	protected $invoice = NULL;
 
@@ -455,7 +457,7 @@ class InvoiceEntry {
     /**
      * Returns the tax table to use for this invoice entry
      *
-     * @return \ThinkopenAt\Gnucash\Domain\Type\TaxTable The tax table to use for this invoice entry
+     * @return \ThinkopenAt\Gnucash\Domain\Model\TaxTable The tax table to use for this invoice entry
      */
     public function getTaxTable() {
         return $this->taxTable;
@@ -464,15 +466,11 @@ class InvoiceEntry {
     /**
      * Sets the tax table to use for this invoice entry
      *
-     * @param \ThinkopenAt\Gnucash\Domain\Type\TaxTable $taxTable: The tax table to use for this invoice entry
+     * @param \ThinkopenAt\Gnucash\Domain\Model\TaxTable $taxTable: The tax table to use for this invoice entry
      * @return void
      */
-    public function setTaxTable(\ThinkopenAt\Gnucash\Domain\Type\TaxTable $taxTable) {
+    public function setTaxTable(\ThinkopenAt\Gnucash\Domain\Model\TaxTable $taxTable) {
         $this->taxTable = $taxTable;
-    }
-
-    public function __toString() {
-        return $this->Persistence_Object_Identifier;
     }
 
 }

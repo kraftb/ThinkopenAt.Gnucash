@@ -33,9 +33,16 @@ class Fraction {
 	 * @param integer $numerator: Will receive the numerator
 	 * @param integer $denominator: Will receive the denominator
      */
-    public function __construct($numerator, $denominator) {
-        $this->numerator = (int)$numerator;
-        $this->denominator = (int)$denominator;
+    public function __construct($numerator = '', $denominator = '') {
+        if (strpos($numerator, '.') !== false) {
+            $this->fromString($numerator);
+        } else {
+            $this->numerator = (int)$numerator;
+            $this->denominator = (int)$denominator;
+            if (!$this->denominator) {
+                $this->denominator = 1;
+            }
+        }
     }
 
     /**
@@ -48,12 +55,31 @@ class Fraction {
     }
 
     /**
+     * Sets the numerator of the fraction
+     * 
+	 * @param integer $numerator: Sets numerator of the fraction
+	 * @return void
+     */
+    public function setNumerator($numerator) {
+        $this->numerator = (int)$numerator;
+    }
+
+    /**
      * Returns the denominator of the fraction
      * 
 	 * @return integer The denominator of the fraction
      */
     public function getDenominator() {
         return $this->denominator;
+    }
+
+    /**
+     * Sets the denominator of the fraction
+     * 
+	 * @return integer $denominator: The denominator of the fraction
+     */
+    public function setDenominator($denominator) {
+        $this->denominator = (int)$denominator;
     }
 
     /**
@@ -72,7 +98,8 @@ class Fraction {
 	 * @return float The fraction value
      */
     public function add(\ThinkopenAt\Gnucash\Domain\Type\Fraction $value) {
-        if ($this->getNumerator() === 0 && $this->getDenominator() === 0) {
+        if ($this->getNumerator() === 0) {
+            // Current value is zero. Just set numerator/denominator from passed value
             $this->numerator = $value->getNumerator();
             $this->denominator = $value->getDenominator();
         } else {
@@ -114,6 +141,18 @@ class Fraction {
         } else {
             return true;
         }
+    }
+
+    /**
+     * Splits a string value into a fraction
+     * 
+	 * @param string $number: The value to be splitted/converted
+	 * @return void
+     */
+    public function fromString($number) {
+        list($full, $fraction) = explode('.', $number);
+        $this->numerator = $full . $fraction;
+        $this->denominator = '1' . str_repeat('0', strlen($fraction));
     }
 
     /**

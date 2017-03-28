@@ -8,6 +8,12 @@
 	<body>
 		<f:flashMessages class="flashmessages" />
 
+        <f:render section="Errors" />
+
+        <f:if condition="{newInvoice}">
+    		<f:render section="NewInvoice" />
+        </f:if>
+
 		<f:form action="createBill" objectName="newBill">
 			<h1><f:render section="Title" />: <f:render section="TitleBillData" /></h1>
 			<f:render section="BillData" />

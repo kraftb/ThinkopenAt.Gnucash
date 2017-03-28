@@ -19,5 +19,32 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Owner {
 
+	/**
+	 * The tax table to use for this invoice entry
+	 *
+     * @var \ThinkopenAt\Gnucash\Domain\Type\TaxTable
+	 */
+    protected $taxTable = NULL;
+
+
+    /**
+     * Returns the tax table to use for this owner
+     *
+     * @return \ThinkopenAt\Gnucash\Domain\Type\TaxTable The tax table to use for this owner
+     */
+    public function getTaxTable() {
+        return $this->taxTable;
+    }
+
+    /**
+     * Sets the tax table to use for this owner
+     *
+     * @param \ThinkopenAt\Gnucash\Domain\Type\TaxTable $taxTable: The tax table to use for this owner
+     * @return void
+     */
+    public function setTaxTable(\ThinkopenAt\Gnucash\Domain\Type\TaxTable $taxTable) {
+        $this->taxTable = $taxTable;
+    }
+
 }
 

@@ -12,18 +12,7 @@ use TYPO3\Flow\Persistence\Repository;
 /**
  * @Flow\Scope("singleton")
  */
-class CustomerRepository extends Repository {
-
-    /**
-     * Poor mans constructor
-     *
-     * @return void
-     */
-    public function initializeObject() {
-        $this->setDefaultOrderings(array(
-            'id' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_ASCENDING,
-        ));
-    }
+class TaxTableRepository extends Repository {
 
 }
 

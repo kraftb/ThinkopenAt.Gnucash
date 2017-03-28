@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Flow\Entity
  */
-class Split {
+class Split extends AbstractGnucashModel {
 
 	/**
 	 * The transaction associated with this split
@@ -117,6 +117,15 @@ class Split {
 	 */	 
 	protected $quantity_denom = 0;
 
+	/**
+	 * Lot for this split
+	 *
+	 * @var \ThinkopenAt\Gnucash\Domain\Model\Lot
+     * @ORM\OneToOne
+	 */	
+	protected $lot = NULL;
+
+
     /**
      * Injects the value and quantity fraction instances
      *
@@ -128,7 +137,6 @@ class Split {
         $this->quantity = new \ThinkopenAt\Gnucash\Domain\Type\Fraction($this->quantity_num, $this->quantity_denom);
     }
 
-    // TODO: Add "lot" property
 
     /**
      * Returns the transaction associated with this split
@@ -282,6 +290,25 @@ class Split {
      */
     public function setQuantity(\ThinkopenAt\Gnucash\Domain\Type\Fraction $quantity) {
         $this->quantity = $quantity;
+    }
+
+    /**
+     * Returns the lot for this split
+     *
+	 * @return \ThinkopenAt\Gnucash\Domain\Model\Lot The lot for this split
+     */
+    public function getLot() {
+        return $this->lot;
+    }
+
+    /**
+     * Sets the lot for this split
+     *
+	 * @param \ThinkopenAt\Gnucash\Domain\Model\Lot $lot: The lot for this split
+     * @return void
+     */
+    public function setLot(\ThinkopenAt\Gnucash\Domain\Model\Lot $lot) {
+        $this->lot = $lot;
     }
 
 }

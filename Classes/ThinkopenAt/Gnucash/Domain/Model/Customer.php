@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Flow\Entity
  */
-class Customer {
+class Customer extends AbstractGnucashModel {
 
 	/**
 	 * The name of this customer
@@ -92,6 +92,7 @@ class Customer {
 	 * The currency for this customer
 	 *
 	 * @var \ThinkopenAt\Gnucash\Domain\Model\Currency
+     * @ORM\ManyToOne
 	 */	
 	protected $currency = NULL;
 
@@ -218,6 +219,7 @@ class Customer {
 	 * Invoice terms for this customer
 	 *
 	 * @var \ThinkopenAt\Gnucash\Domain\Model\Billterm
+     * @ORM\ManyToOne
 	 */	
 	protected $terms = NULL;
 
@@ -231,7 +233,8 @@ class Customer {
 	/**
 	 * The tax table for invoices for this customer
 	 *
-     * @var \ThinkopenAt\Gnucash\Domain\Type\TaxTable
+     * @var \ThinkopenAt\Gnucash\Domain\Model\TaxTable
+     * @ORM\ManyToOne
 	 */
     protected $taxTable = NULL;
 
@@ -737,7 +740,7 @@ class Customer {
     /**
      * Returns the tax table for invoices for this customer
      *
-     * @return \ThinkopenAt\Gnucash\Domain\Type\TaxTable The tax table for invoices for this customer
+     * @return \ThinkopenAt\Gnucash\Domain\Model\TaxTable The tax table for invoices for this customer
      */
     public function getTaxTable() {
         return $this->taxTable;
@@ -746,18 +749,12 @@ class Customer {
     /**
      * Sets the tax table for invoices for this customer
      *
-     * @param \ThinkopenAt\Gnucash\Domain\Type\TaxTable $taxTable: The tax table for invoices for this customer
+     * @param \ThinkopenAt\Gnucash\Domain\Model\TaxTable $taxTable: The tax table for invoices for this customer
      * @return void
      */
-    public function setTaxTable(\ThinkopenAt\Gnucash\Domain\Type\TaxTable $taxTable) {
+    public function setTaxTable(\ThinkopenAt\Gnucash\Domain\Model\TaxTable $taxTable) {
         $this->taxTable = $taxTable;
     }
 
-
-    public function __toString() {
-        return $this->Persistence_Object_Identifier;
-    }
-
 }
-
 

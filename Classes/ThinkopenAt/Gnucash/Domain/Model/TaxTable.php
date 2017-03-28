@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Flow\Entity
  */
-class TaxTable {
+class TaxTable extends AbstractGnucashModel {
 
 }
 

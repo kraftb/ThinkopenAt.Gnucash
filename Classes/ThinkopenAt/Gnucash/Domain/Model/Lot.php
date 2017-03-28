@@ -14,13 +14,14 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Flow\Entity
  */
-class Lot {
+class Lot extends AbstractGnucashModel {
 
 	/**
 	 * Account for this lot
 	 *
 	 * @var \ThinkopenAt\Gnucash\Domain\Model\Account
 	 * @ORM\Column(name="account_guid")
+     * @ORM\ManyToOne
 	 */	 
 	protected $account = NULL;
     

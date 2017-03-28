@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Flow\Entity
  */
-class Account {
+class Account extends AbstractGnucashModel {
 
 	/**
 	 * The parent account for this account
@@ -69,7 +69,9 @@ class Account {
      * used for this account. Like EURO, Dollar, etc.
 	 * Probably there should be a domain model (Dto) for this variable instead of just being a string
 	 *
-	 * @var string
+	 * @var \ThinkopenAt\Gnucash\Domain\Model\Currency
+	 * @ORM\Column(name="commodity_guid")
+	 * @ORM\ManyToOne
 	 */	 
 	protected $commodity = '';
 
@@ -191,7 +193,7 @@ class Account {
     /**
      * Returns the commodity for this account
      * 
-	 * @return string The commodity for this account
+	 * @return \ThinkopenAt\Gnucash\Domain\Model\Currency The commodity for this account
      */
     public function getCommodity() {
         return $this->commodity;
@@ -200,15 +202,11 @@ class Account {
     /**
      * Sets the commodity for this account
      * 
-	 * @param string $commodity: The commodity for this account
+	 * @param \ThinkopenAt\Gnucash\Domain\Model\Currency $commodity: The commodity for this account
      * @return void
      */
-    public function setCommodity($commodity) {
+    public function setCommodity(\ThinkopenAt\Gnucash\Domain\Model\Currency $commodity) {
         $this->commodity = $commodity;
-    }
-
-    public function __toString() {
-        return $this->Persistence_Object_Identifier;
     }
 
 }

@@ -13,7 +13,7 @@ var getNewBlock = function(lastBlock, keepCategory, keepComment) {
 }
 
 var updateFieldName = function(fieldName) {
-	return fieldName.replace(/newBill\[entry\]\[([0-9]+|\*)\]/, 'newBill[entry]['+idx+']');
+	return fieldName.replace(/newBill\[entries\]\[([0-9]+|\*)\]/, 'newBill[entries]['+idx+']');
 }
 
 $(window).keypress(function(e) {
