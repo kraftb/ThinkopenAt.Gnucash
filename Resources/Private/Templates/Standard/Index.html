@@ -8,6 +8,7 @@
 <f:section name="Content">
 
     <ul>
+        <!-- TODO: Create "VAT" controller -->
         <li>
             <f:link.action action="vatDeclaration">
                 Umsatzsteuer Voranmeldung - PDF für Archiv
@@ -23,9 +24,20 @@
                 XML für Zusammenfassende Meldung
             </f:link.action>
         </li>
+        <!-- TODO: Create "invoiceController" -->
         <li>
             <f:link.action action="billCustomer">
                 Ausgangsrechnung erfassen
+            </f:link.action>
+        </li>
+        <li>
+            <f:link.action controller="Receipt" action="new">
+                Eingangsrechnung/Kassabon erfassen
+            </f:link.action>
+        </li>
+        <li>
+            <f:link.action controller="BmdExport" action="index">
+                BMD Daten Export 
             </f:link.action>
         </li>
     </ul>

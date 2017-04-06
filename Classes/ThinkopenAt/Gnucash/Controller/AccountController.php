@@ -15,12 +15,6 @@ use ThinkopenAt\Gnucash\Domain\Model\Account;
 class AccountController extends ActionController {
 
 	/**
-	 * @Flow\Inject
-	 * @var \ThinkopenAt\Gnucash\Domain\Repository\AccountRepository
-	 */
-	protected $accountRepository;
-
-	/**
 	 * @param \ThinkopenAt\Gnucash\Domain\Model\Account $account
 	 * @return void
 	 */

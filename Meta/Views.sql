@@ -2,7 +2,8 @@
 CREATE VIEW `thinkopenat_gnucash_domain_model_account` AS select `to_gnucash`.`accounts`.`guid` AS `persistence_object_identifier`,`to_gnucash`.`accounts`.`name` AS `name`,`to_gnucash`.`accounts`.`account_type` AS `account_type`,`to_gnucash`.`accounts`.`commodity_guid` AS `commodity`,`to_gnucash`.`accounts`.`commodity_scu` AS `commodity_scu`,`to_gnucash`.`accounts`.`non_std_scu` AS `non_std_scu`,`to_gnucash`.`accounts`.`parent_guid` AS `parent`,`to_gnucash`.`accounts`.`code` AS `code`,`to_gnucash`.`accounts`.`description` AS `description`,`to_gnucash`.`accounts`.`hidden` AS `hidden`,`to_gnucash`.`accounts`.`placeholder` AS `placeholder` from `to_gnucash`.`accounts`;
 
 
-CREATE VIEW `thinkopenat_gnucash_domain_model_invoice` AS select `to_gnucash`.`invoices`.`guid` AS `persistence_object_identifier`,`to_gnucash`.`invoices`.`id` AS `id`,`to_gnucash`.`invoices`.`date_opened` AS `opened`,`to_gnucash`.`invoices`.`date_posted` AS `posted`,`to_gnucash`.`invoices`.`notes` AS `notes`,`to_gnucash`.`invoices`.`active` AS `active`,`to_gnucash`.`invoices`.`currency` AS `currency`,`to_gnucash`.`invoices`.`owner_type` AS `ownerType`,`to_gnucash`.`invoices`.`owner_guid` AS `owner`,`to_gnucash`.`invoices`.`terms` AS `terms`,`to_gnucash`.`invoices`.`billing_id` AS `billingId`,`to_gnucash`.`invoices`.`post_txn` AS `transaction`,`to_gnucash`.`invoices`.`post_lot` AS `lot`,`to_gnucash`.`invoices`.`post_acc` AS `account`,`to_gnucash`.`invoices`.`billto_type` AS `billtoType`,`to_gnucash`.`invoices`.`billto_guid` AS `billto`,`to_gnucash`.`invoices`.`charge_amt_num` AS `charge_amount_num`,`to_gnucash`.`invoices`.`charge_amt_denom` AS `charge_amount_denom` from `to_gnucash`.`invoices`;
+DROP VIEW `thinkopenat_gnucash_domain_model_invoice`;
+CREATE VIEW `thinkopenat_gnucash_domain_model_invoice` AS select `to_gnucash`.`invoices`.`guid` AS `persistence_object_identifier`,`to_gnucash`.`invoices`.`id` AS `id`,`to_gnucash`.`invoices`.`date_opened` AS `opened`,DATE_ADD(`to_gnucash`.`invoices`.`date_posted`, INTERVAL 3 HOUR) AS `posted`,`to_gnucash`.`invoices`.`notes` AS `notes`,`to_gnucash`.`invoices`.`active` AS `active`,`to_gnucash`.`invoices`.`currency` AS `currency`,`to_gnucash`.`invoices`.`owner_type` AS `ownerType`,`to_gnucash`.`invoices`.`owner_guid` AS `owner`,`to_gnucash`.`invoices`.`terms` AS `terms`,`to_gnucash`.`invoices`.`billing_id` AS `billingId`,`to_gnucash`.`invoices`.`post_txn` AS `transaction`,`to_gnucash`.`invoices`.`post_lot` AS `lot`,`to_gnucash`.`invoices`.`post_acc` AS `account`,`to_gnucash`.`invoices`.`billto_type` AS `billtoType`,`to_gnucash`.`invoices`.`billto_guid` AS `billto`,`to_gnucash`.`invoices`.`charge_amt_num` AS `charge_amount_num`,`to_gnucash`.`invoices`.`charge_amt_denom` AS `charge_amount_denom` from `to_gnucash`.`invoices`;
 
 
 CREATE VIEW `thinkopenat_gnucash_domain_model_split` AS select `to_gnucash`.`splits`.`guid` AS `persistence_object_identifier`,`to_gnucash`.`splits`.`tx_guid` AS `transaction`,`to_gnucash`.`splits`.`account_guid` AS `account`,`to_gnucash`.`splits`.`memo` AS `memo`,`to_gnucash`.`splits`.`action` AS `action`,`to_gnucash`.`splits`.`reconcile_state` AS `reconcile_state`,`to_gnucash`.`splits`.`reconcile_date` AS `reconcile_date`,`to_gnucash`.`splits`.`value_num` AS `value_num`,`to_gnucash`.`splits`.`value_denom` AS `value_denom`,`to_gnucash`.`splits`.`quantity_num` AS `quantity_num`,`to_gnucash`.`splits`.`quantity_denom` AS `quantity_denom`, lot_guid AS lot from `to_gnucash`.`splits`
@@ -33,17 +34,18 @@ AS SELECT
     quote_source AS quoteSource, quote_tz AS quoteTz
 FROM to_gnucash.commodities;
 
+DROP VIEW thinkopenat_gnucash_domain_model_taxtable;
 CREATE VIEW
-    thinkopenat_gnucash_domain_model_tax_table
+    thinkopenat_gnucash_domain_model_taxtable
 AS SELECT
     guid AS persistence_object_identifier,
     name, refcount, invisible, parent
 FROM to_gnucash.taxtables;
 
 
-DROP VIEW thinkopenat_gnucash_domain_model_invoice_entry;
+DROP VIEW thinkopenat_gnucash_domain_model_invoiceentry;
 CREATE VIEW
-    thinkopenat_gnucash_domain_model_invoice_entry
+    thinkopenat_gnucash_domain_model_invoiceentry
 AS SELECT
     guid AS persistence_object_identifier,
     date, date_entered AS entered, description,
@@ -54,4 +56,26 @@ AS SELECT
     i_taxable AS taxable, i_taxincluded AS taxIncluded, i_taxtable AS taxTable
 FROM to_gnucash.entries;
 
+DROP VIEW thinkopenat_gnucash_domain_model_lot;
+CREATE VIEW
+    thinkopenat_gnucash_domain_model_lot
+AS SELECT
+    guid AS persistence_object_identifier,
+    account_guid AS account,
+    is_closed
+FROM to_gnucash.lots;
+
+
+
+DROP VIEW `thinkopenat_gnucash_domain_model_transaction`;
+CREATE VIEW
+    `thinkopenat_gnucash_domain_model_transaction`
+AS SELECT
+    `to_gnucash`.`transactions`.`guid` AS `persistence_object_identifier`,
+    `to_gnucash`.`transactions`.`currency_guid` AS `currency`,
+    `to_gnucash`.`transactions`.`num` AS `number`,
+    DATE_ADD(`to_gnucash`.`transactions`.`post_date`, INTERVAL 3 HOURS) AS `postDate`,
+    `to_gnucash`.`transactions`.`enter_date` AS `enterDate`,
+    `to_gnucash`.`transactions`.`description` AS `description`
+from `to_gnucash`.`transactions`;
 

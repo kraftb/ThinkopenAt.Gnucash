@@ -16,7 +16,7 @@ use TYPO3\Flow\Utility\Arrays;
 use ThinkopenAt\Gnucash\Domain\Model\Account;
 use ThinkopenAt\Gnucash\Domain\Type\Fraction;
 
-class StandardController extends ActionController {
+class StandardController extends AbstractGnucashController {
 
     /**
      * @Flow\Inject
@@ -24,17 +24,6 @@ class StandardController extends ActionController {
      */
     protected $entityManager;
 
-	/**
-	 * @Flow\Inject
-	 * @var \ThinkopenAt\Gnucash\Domain\Repository\AccountRepository
-	 */
-	protected $accountRepository = NULL;
-
-	/**
-	 * @Flow\Inject
-	 * @var \ThinkopenAt\Gnucash\Domain\Repository\SplitRepository
-	 */
-	protected $splitRepository = NULL;
 
 	/**
 	 * @Flow\Inject
@@ -94,16 +83,6 @@ class StandardController extends ActionController {
 
 
 	/**
-	 * Setter for injected settings.
-	 *
-	 * @param array $settings
-	 * @return void
-	 */
-	public function setSettings(array $settings) {
-		$this->settings = $settings;
-	}
-
-	/**
 	 * @return void
 	 */
 	public function indexAction() {
@@ -129,8 +108,8 @@ class StandardController extends ActionController {
 	 * @return void
 	 */
 	public function vatDeclarationAction() {
-        $year = 2016;
-        $quarter = 4;
+        $year = 2017;
+        $quarter = 1;
         $company = $this->settings['Setup']['CompanyName'];
         $taxId = $this->settings['Setup']['TaxId'];
 
@@ -191,34 +170,6 @@ class StandardController extends ActionController {
         );
         $dataHash = hexdec(substr(sha1(serialize($taxData)), 0, 6)) % 1000000000;
         $this->view->assign('data-hash', $dataHash);
-    }
-
-    /**
-     * Determine the DateTime for the start of a quarter
-     *
-     * @param integer $year: The year for which to determine the quarter start
-     * @param integer $quarter: The quarter (1-4) for which to determine the start
-     * @return \DateTime The quarter start
-     */
-    protected function getQuarterStart($year, $quarter) {
-        $month = (($quarter - 1) * 3) + 1;
-        return new \TYPO3\Flow\Utility\Now($year.'-'.$month.'-1 0:00');
-    }
-
-    /**
-     * Determine the DateTime for the end of a quarter
-     *
-     * @param integer $year: The year for which to determine the quarter end
-     * @param integer $quarter: The quarter (1-4) for which to determine the end
-     * @return \DateTime The quarter end
-     */
-    protected function getQuarterEnd($year, $quarter) {
-        $month = ($quarter * 3) + 1;
-        if ($month > 12) {
-            $month -= 12;
-            $year += 1;
-        }
-        return new \TYPO3\Flow\Utility\Now($year.'-'.$month.'-1 0:00');
     }
 
 	/**

@@ -16,7 +16,6 @@ use Doctrine\Common\Collections\Collection;
  * aspects like getting/setting the persistence object identifier
  * get inherited.
  *
- * @Flow\Entity
  */
 abstract class AbstractGnucashModel {
 
