@@ -1,0 +1,21 @@
+
+#
+# Example settings for Gnucash
+#
+# This file configures various aspects of the
+# Gnucash application
+# 
+# You can either rename this file to "Settings.yaml"
+# or append the configuration to your global TYPO3
+# Flow configuration Settings.yaml file.
+#
+
+ThinkopenAt:
+  Gnucash:
+    Setup:
+      CompanyName: 'Your company name'
+      TaxId: '12 345/9876'
+      Currency: 'EUR'
+      CustomerIdLength: 3
+      VatRate: 20
+

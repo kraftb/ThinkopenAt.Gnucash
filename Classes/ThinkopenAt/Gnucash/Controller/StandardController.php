@@ -108,8 +108,10 @@ class StandardController extends AbstractGnucashController {
 	 * @return void
 	 */
 	public function vatDeclarationAction() {
+        // TODO: Make export year/quarter configurable via interface
         $year = 2017;
         $quarter = 1;
+
         $company = $this->settings['Setup']['CompanyName'];
         $taxId = $this->settings['Setup']['TaxId'];
 
@@ -368,7 +370,8 @@ class StandardController extends AbstractGnucashController {
         }
 
         $vatF = $net->toFloat();
-        $vatF *= 0.20;
+        $vatRate = (float)$this->settings['Setup']['VatRate'];
+        $vatF *= ($vatRate / 100.0);
         $vatF = round($vatF, 2);
 
         $vat = $this->objectManager->get(Fraction::class, (string)$vatF);
@@ -560,8 +563,9 @@ class StandardController extends AbstractGnucashController {
         $owner = $this->getInvoiceOwner($invoice);
 
         $ownerId = $owner->getId();
-        if (strlen($ownerId) !== 3) {
-            throw new \Exception('Owner/customer ids have to be 3 characters long!');
+        $customerIdLength = (int)$this->settings['Setup']['CustomerIdLength'];
+        if (strlen($ownerId) !== $customerIdLength) {
+            throw new \Exception('Owner/customer ids have to be ' . $customerIdLength . ' characters long!');
         }
 
         $accountIncome = $this->accountRepository->findByCode('CUSTOMER:' . $ownerId);
