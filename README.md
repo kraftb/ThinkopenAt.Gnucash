@@ -75,9 +75,9 @@ TYPO3 Flow Configuration/Settings.yaml file:
           VatRate: 20
  
 
-## Configuration for VAT extempt export
+## Configuration for VAT statement export
 
-To get the VAT extempt statement (Umsatzsteuervoranmeldung) operational
+To get the VAT statement (Umsatzsteuervoranmeldung) operational
 there are just a few things you have to change in your GnuCash accounts.
 
 The account codes used here are cohering to the currently Austrian account
@@ -99,7 +99,7 @@ from within the gnucash interface as shown in the screenshot.
 
 ![Account schema in GnuCash](/Documentation/Images/AccountSchema.png?raw=true "GnuCash account schema")
 
-The important CODEs for your VAT exempt are as described here:
+The important CODEs for your VAT declaration are as described here:
 
 Those accounts get used to book your outgoing bills. The net amount (excluding
 VAT) is booked to those accounts while the due VAT is book to the "VAT-AT"
@@ -142,12 +142,12 @@ So to create a virtual "Umsatzsteuer" and "Vorsteuer" account for reverse
 charge purchases.
 
 I am not sure about whether this is correct or usual this way. The values
-from there are usually not required in the VAT exempt form so this is
+from there are usually not required in the VAT declaration form so this is
 obligatory.
 
   **VAT-RETURN-EU**
 
-## Exporting an VAT exempt
+## Exporting an VAT statement
 
 Open the TYPO3 Flow application at
 
