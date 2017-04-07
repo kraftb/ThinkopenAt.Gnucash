@@ -60,6 +60,21 @@ a mysql backend. In Linux you have to install some additional libraries
 and there are tutorials on how to use Gnucash+mysql in Windows (Just
 search the web).
 
+## Database setup
+
+To create a connection between the database GnuCash is using and your
+TYPO3 Flow database there are a bunch of SQL VIEWs which have to get
+created. You can create those VIEWs by executing the statements in
+Meta/Views.sql of the GnuCash application.
+
+The VIEWs described in there are creating a read/write relation between
+your TYPO3 Flow and GnuCash database. Not only the table names are
+mapped to table names which TYPO3 Flow uses natively but also some
+column names are aliased.
+
+Of course the TYPO3 Flow database user need access privileges to the
+GnuCash database.
+
 ## Configuration of the application
 
 Append the following configuration at the end of your
