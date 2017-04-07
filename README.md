@@ -105,16 +105,16 @@ Those accounts get used to book your outgoing bills. The net amount (excluding
 VAT) is booked to those accounts while the due VAT is book to the "VAT-AT"
 account.
 
-  *VAT-INCOME-AT*
-  *VAT-INCOME-EU*
-  *VAT-INCOME-WW*
+  **VAT-INCOME-AT**
+  **VAT-INCOME-EU**
+  **VAT-INCOME-WW**
 
 The VAT which is due to get delivered to the fiscal office for every outgoing
 bill you send to a customer has to get booked to an account with this code.
 You will usually not have to charge any VAT to your customers in the EU as
 those are falling within the reverse charge regulation.
 
-  *VAT-AT*
+  **VAT-AT**
 
 When you make purchases or other companie send you a bill you have to book the
 bill to the appropriate 7-class accounts (Abschreibungen) probably using an
@@ -122,15 +122,15 @@ bill to the appropriate 7-class accounts (Abschreibungen) probably using an
 to you usually has to get booked to 25-class account. Depending on 10% or 20%
 different codes should get set for those VAT accounts:
 
-  *VAT-RETURN-20*
-  *VAT-RETURN-10*
+  **VAT-RETURN-20**
+  **VAT-RETURN-10**
 
 For purchases or sevices in the EU you will usually get a bill without any
 VAT and a notice about reverse charge regulations. You have to book the purchases
 to an account labeled with the following code. The sum of purchases made in
 the EU is used as basis for assesment (Bemessungsgrundlage).
 
-  *VAT-PURCHASE-EU*
+  **VAT-PURCHASE-EU**
 
 Finally you can (?) book (and counter-book) a VAT for purchases made in the EU
 to an account with the following code.
@@ -142,7 +142,7 @@ I am not sure about whether this is correct or usual this way. The values
 from there are usually not required in the VAT exempt form so this is
 obligatory.
 
-  *VAT-RETURN-EU*
+  **VAT-RETURN-EU**
 
 ## Exporting an VAT exempt
 
