@@ -65,14 +65,14 @@ search the web).
 Append the following configuration at the end of your
 TYPO3 Flow Configuration/Settings.yaml file:
 
-  ThinkopenAt:
-    Gnucash:
-      Setup:
-        CompanyName: 'Your company name'
-        TaxId: '12 345/9876'
-        Currency: 'EUR'
-        CustomerIdLength: 3
-        VatRate: 20
+    ThinkopenAt:
+     Gnucash:
+        Setup:
+          CompanyName: 'Your company name'
+          TaxId: '12 345/9876'
+          Currency: 'EUR'
+          CustomerIdLength: 3
+          VatRate: 20
  
 
 ## Configuration for VAT extempt export
@@ -106,7 +106,9 @@ VAT) is booked to those accounts while the due VAT is book to the "VAT-AT"
 account.
 
   **VAT-INCOME-AT**
+  
   **VAT-INCOME-EU**
+  
   **VAT-INCOME-WW**
 
 The VAT which is due to get delivered to the fiscal office for every outgoing
@@ -123,6 +125,7 @@ to you usually has to get booked to 25-class account. Depending on 10% or 20%
 different codes should get set for those VAT accounts:
 
   **VAT-RETURN-20**
+  
   **VAT-RETURN-10**
 
 For purchases or sevices in the EU you will usually get a bill without any
