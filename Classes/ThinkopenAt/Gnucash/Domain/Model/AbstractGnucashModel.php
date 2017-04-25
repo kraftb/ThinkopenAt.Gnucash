@@ -15,7 +15,6 @@ use Doctrine\Common\Collections\Collection;
  * GnuCash domain object. Derive from this class so any common
  * aspects like getting/setting the persistence object identifier
  * get inherited.
- *
  */
 abstract class AbstractGnucashModel {
 

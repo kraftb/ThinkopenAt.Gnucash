@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title><f:render section="Title" /></title>
+		<f:base />
+	</head>
+	<body>
+		<f:flashMessages class="flashmessages" />
+
+        <f:render partial="Errors" />
+
+        <f:if condition="{newReceipts}">
+    		<f:render section="NewReceipts" />
+        </f:if>
+
+		<f:form action="createReceipts" objectName="newReceipts">
+			<h1><f:render section="Title" /></h1>
+
+            <f:render section="HeadButtons" />
+            
+            <table>
+                <f:render section="ReceiptHeader" />
+
+                <tbody id="itemsContainer">
+                    <f:render section="ReceiptLine" />
+                </tbody>
+            </table>
+
+			<f:render section="Buttons" />
+		</f:form>
+
+		<f:render section="Scripts" />
+	</body>
+</html>
+

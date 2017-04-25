@@ -1,0 +1,78 @@
+
+<f:layout name="NewVendor" />
+
+<f:section name="Title">Händler anlegen</f:section>
+
+<f:section name="NewVendor">
+    <h1>Händler erfolgreich angelegt</h1>
+    <dl>
+        <dt>Bezeichnung:</dt>
+        <dd>{newVendor.name}</dd>
+
+        <dt>QR Identifier:</dt>
+        <dd>{newVendor.qr}</dd>
+
+        <dt>Konto:</dt>
+        <dd>{newVendor.account.name}</dd>
+    </dl>
+</f:section>
+
+
+<f:section name="VendorForm">
+	<table>
+		<tr>
+			<th>Bezeichnung</th>
+			<td>
+				<f:form.textfield name="newVendor[name]" value="" size="50" class="itemField" />
+			</td>
+		</tr>
+		<tr>
+			<th>QR Identifier</th>
+			<td>
+				<f:form.textfield name="newVendor[qr]" value="" size="50" class="itemField" />
+			</td>
+		</tr>
+		<tr>
+			<th>Konto</th>
+			<td>
+				<f:form.select name="newVendor[account]" options="{expenseAccounts}" optionLabelField="name" size="1" />
+			</td>
+		</tr>
+	</table>
+</f:section>
+
+
+<f:section name="VendorList">
+    <h1>Bestehende Händler</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Bezeichnung</th>
+                <th>QR Identifier</th>
+                <th>Konto</th>
+            </tr>
+        </thead>
+        <tbody>
+            <f:for each="{vendors}" as="vendor">
+                <tr>
+                    <td>{vendor.name}</td>
+                    <td>{vendor.name}</td>
+                </tr>
+            </f:for>
+        </tbody>
+    </table>
+</f:section>
+
+
+<f:section name="Buttons">
+    <br />
+    <f:form.submit name="Create" value="Create" />
+</f:section>
+
+
+<f:section name="Scripts">
+	<script type="text/javascript" src="{f:uri.resource(path: 'Libraries/jquery/jquery-1.9.1.min.js', package: 'TYPO3.Welcome')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/TimeFlies.js', package: 'ThinkopenAt.TimeFlies')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/newVendor.js')}"></script>
+</f:section>
+

@@ -1,0 +1,82 @@
+
+<f:layout name="NewReceipts" />
+
+<f:section name="Title">Kassabons erfassen</f:section>
+<f:section name="TitleBillData">Rechnungsdaten</f:section>
+<f:section name="TitleBillEntries">Erbrachte Leistungen</f:section>
+
+<f:section name="NewReceipts">
+    <h1>{newReceipts -> f:count()} Kassabons erfolgreich angelegt</h1>
+</f:section>
+
+
+<f:section name="HeadButtons">
+    <div class="head-buttons">
+        <f:link.action action="newVendor">Händler anlegen</f:link.action>
+    </div>
+</f:section>
+
+
+<f:section name="ReceiptHeader">
+    <thead>
+        <tr>
+            <th>Index</th>
+            <th>Datum</th>
+            <th>Geschäft</th>
+            <th>Betrag</th>
+            <th>Zahlungsart</th>
+        </tr>
+    </thead>
+</f:section>
+
+
+<f:section name="ReceiptLine">
+    <tr class="item" id="item_template" style="display: none;">
+
+        <td>
+            <!-- Index -->
+            <f:form.textfield name="newReceipt[entries][*][index]" value="0" size="4" class="itemField receipt-entry-index" disabled="disabled" />
+        </td>
+
+        <td>
+            <!-- Datum -->
+            <f:form.textfield name="newReceipt[entries][*][date]" value="{f:format.date(date: now, format: 'Y-m-d')}" size="10" class="dateField itemField receipt-entry-date" />
+        </td>
+
+        <td>
+            <!-- Geschäft -->
+            <f:form.select name="newReceipts[entries][*][shop]" options="{shops}" class="itemField receipt-entry-shop" />
+        </td>
+
+        <td>
+            <!-- Betrag -->
+            <f:form.textfield name="newReceipts[entries][*][price]" value="0.00" size="10" class="itemField priceField receipt-entry-price" />
+        </td>
+
+        <td>
+            <!-- Zahlungsart -->
+            <f:form.select name="newReceipts[entries][*][paymentType]" options="{'bar': 'Bar', 'card': 'Bankomat'}" class="itemField receipt-entry-paymentType" />
+        </td>
+
+    </tr>
+</f:section>
+
+
+<f:section name="Buttons">
+    <br />
+    <f:form.button type="button" id="addLine" name="addLine">Add line</f:form.button>
+    <br />
+    <br />
+    <f:form.submit name="Create" value="Create" />
+</f:section>
+
+
+<f:section name="Scripts">
+	<script type="text/javascript" src="{f:uri.resource(path: 'Libraries/jquery/jquery-1.9.1.min.js', package: 'TYPO3.Welcome')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/TimeFlies.js', package: 'ThinkopenAt.TimeFlies')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/dateField.js', package: 'ThinkopenAt.TimeFlies')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/lineHandling-gnucashReceiptItem.js')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/lineHandling.js', package: 'ThinkopenAt.TimeFlies')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path: 'JavaScript/newReceipt.js')}"></script>
+</f:section>
+

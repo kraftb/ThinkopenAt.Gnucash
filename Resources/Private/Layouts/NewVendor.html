@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title><f:render section="Title" /></title>
+		<f:base />
+	</head>
+	<body>
+		<f:flashMessages class="flashmessages" />
+
+        <f:render partial="Errors" />
+
+        <f:if condition="{newVendor}">
+    		<f:render section="NewVendor" />
+        </f:if>
+
+		<f:form action="createVendor" objectName="newVendor">
+			<h1><f:render section="Title" /></h1>
+
+            <f:render section="VendorForm" />
+
+			<f:render section="Buttons" />
+		</f:form>
+
+		<f:render section="VendorList" />
+
+		<f:render section="Scripts" />
+	</body>
+</html>
+
