@@ -14,17 +14,51 @@ CREATE VIEW
     thinkopenat_gnucash_domain_model_customer
 AS SELECT
     guid AS persistence_object_identifier,
-    name, id, notes, active, discount_num, discount_denom, credit_num, credit_denom,
-    currency, tax_override AS taxOverride,
+    name, id, active, currency,
     addr_name AS addressName, addr_addr1 AS addressLine1, addr_addr2 AS addressLine2,
     addr_addr3 AS addressLine3, addr_addr4 AS addressLine4, addr_phone AS addressPhone,
     addr_fax AS addressFax, addr_email AS addressEmail,
+    notes, 
+    terms, tax_included AS taxIncluded, taxtable AS taxTable
+    tax_override AS taxOverride,
+
+    discount_num, discount_denom, credit_num, credit_denom,
+
     shipaddr_name AS shippingAddressName, shipaddr_addr1 AS shippingAddressLine1,
     shipaddr_addr2 AS shippingAddressLine2, shipaddr_addr3 AS shippingAddressLine3,
     shipaddr_addr4 AS shippingAddressLine4, shipaddr_phone AS shippingAddressPhone,
     shipaddr_fax AS shippingAddressFax, shipaddr_email AS shippingAddressEmail,
-    terms, tax_included AS taxIncluded, taxtable AS taxTable
+
 FROM to_gnucash.customers;
+
+
+CREATE VIEW
+    thinkopenat_gnucash_domain_model_vendor
+AS SELECT
+    guid AS persistence_object_identifier,
+    name, id, active, currency,
+    addr_name AS addressName, addr_addr1 AS addressLine1, addr_addr2 AS addressLine2,
+    addr_addr3 AS addressLine3, addr_addr4 AS addressLine4, addr_phone AS addressPhone,
+    addr_fax AS addressFax, addr_email AS addressEmail,
+    notes,
+    terms, tax_inc AS taxIncluded, tax_table AS taxTable,
+    tax_override AS taxOverride
+FROM to_gnucash.vendors;
+
+
+CREATE VIEW
+    thinkopenat_gnucash_domain_model_employee
+AS SELECT
+    guid AS persistence_object_identifier,
+    username AS name, id, active, currency,
+    addr_name AS addressName, addr_addr1 AS addressLine1, addr_addr2 AS addressLine2,
+    addr_addr3 AS addressLine3, addr_addr4 AS addressLine4, addr_phone AS addressPhone,
+    addr_fax AS addressFax, addr_email AS addressEmail,
+    rate_num, rate_denom,
+    workday_num, workday_denom,
+    language, acl, ccard_guid AS creditCard
+FROM to_gnucash.employees;
+
 
 CREATE VIEW
     thinkopenat_gnucash_domain_model_currency
