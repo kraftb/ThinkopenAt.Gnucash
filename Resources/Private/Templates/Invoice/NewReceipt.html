@@ -35,27 +35,27 @@
 
         <td>
             <!-- Index -->
-            <f:form.textfield name="newReceipt[entries][*][index]" value="0" size="4" class="itemField receipt-entry-index" disabled="disabled" />
+            <f:form.textfield name="newReceipts[*][index]" value="0" size="4" class="itemField receipt-entry-index" disabled="disabled" />
         </td>
 
         <td>
             <!-- Datum -->
-            <f:form.textfield name="newReceipt[entries][*][date]" value="{f:format.date(date: now, format: 'Y-m-d')}" size="10" class="dateField itemField receipt-entry-date" />
+            <f:form.textfield name="newReceipts[*][date]" value="{f:format.date(date: now, format: 'Y-m-d')}" size="10" class="dateField itemField receipt-entry-date" />
         </td>
 
         <td>
             <!-- Geschäft -->
-            <f:form.select name="newReceipts[entries][*][shop]" options="{shops}" class="itemField receipt-entry-shop" />
+            <f:form.select name="newReceipts[*][vendor]" options="{vendors}" class="itemField receipt-entry-vendor" optionLabelField="name" />
         </td>
 
         <td>
             <!-- Betrag -->
-            <f:form.textfield name="newReceipts[entries][*][price]" value="0.00" size="10" class="itemField priceField receipt-entry-price" />
+            <f:form.textfield name="newReceipts[*][amount]" value="0.00" size="10" class="itemField priceField receipt-entry-price" />
         </td>
 
         <td>
             <!-- Zahlungsart -->
-            <f:form.select name="newReceipts[entries][*][paymentType]" options="{'bar': 'Bar', 'card': 'Bankomat'}" class="itemField receipt-entry-paymentType" />
+            <f:form.select name="newReceipts[*][paymentType]" options="{'bar': 'Bar', 'card': 'Bankomat/Giro'}" class="itemField receipt-entry-paymentType" />
         </td>
 
     </tr>

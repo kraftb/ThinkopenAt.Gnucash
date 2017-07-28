@@ -44,7 +44,17 @@
 
 <f:section name="VendorList">
     <h1>Bestehende Händler</h1>
-    <table>
+    <style type="text/css">
+.VendorList {
+    border-collapse: collapse;
+}
+.VendorList th,
+.VendorList td {
+    border: 1px solid black;
+    padding: 3px 10px 3px 10px;
+}
+    </style>
+    <table class="VendorList">
         <thead>
             <tr>
                 <th>Bezeichnung</th>
@@ -56,7 +66,8 @@
             <f:for each="{vendors}" as="vendor">
                 <tr>
                     <td>{vendor.name}</td>
-                    <td>{vendor.name}</td>
+                    <td>{vendor.qrIdentifier}</td>
+                    <td>{vendor.account}</td>
                 </tr>
             </f:for>
         </tbody>

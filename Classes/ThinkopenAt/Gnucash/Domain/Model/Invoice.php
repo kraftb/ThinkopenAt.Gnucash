@@ -370,6 +370,9 @@ class Invoice extends AbstractGnucashModel {
 	 * @return \ThinkopenAt\Gnucash\Domain\Model\Transaction The transaction for this invoice
      */
     public function getTransaction() {
+		if ($this->transaction instanceof \Doctrine\ORM\Proxy\Proxy) {
+			$this->transaction->__load();
+		}
         return $this->transaction;
     }
 

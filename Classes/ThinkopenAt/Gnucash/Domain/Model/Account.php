@@ -209,14 +209,5 @@ class Account extends AbstractGnucashModel {
         $this->commodity = $commodity;
     }
 
-    /**
-     * Returns a readable string representation of the account
-     * 
-     * @return string A string representation of the account
-     */
-    public function __toString() {
-        return $this->getName();
-    }
-
 }
 

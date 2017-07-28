@@ -2,7 +2,7 @@
 namespace ThinkopenAt\Gnucash\Controller;
 
 /*                                                                        *
- * This script belongs to the TYPO3 Flow package "ThinkopenAt.TimeFlies". *
+ * This script belongs to the TYPO3 Flow package "ThinkopenAt.Gnucash".   *
  *                                                                        *
  *                                                                        */
 
@@ -31,6 +31,12 @@ class InvoiceController extends ActionController {
 	protected $accountRepository = NULL;
 
 	/**
+	 * @Flow\Inject
+	 * @var \ThinkopenAt\Gnucash\Domain\Repository\VendorRepository
+	 */
+	protected $vendorRepository = NULL;
+
+	/**
 	 * @var array
 	 * @Flow\Inject(setting="Setup")
 	 */
@@ -52,14 +58,45 @@ class InvoiceController extends ActionController {
 	 */
 	public function newReceiptAction() {
         $this->view->assign('now', new \TYPO3\Flow\Utility\Now());
+        $vendors = $this->vendorRepository->findAll();
+        $this->view->assign('vendors', $vendors);
 	}
+
+    /**
+     * Initializes the "createReceipts" action by removing the "*" item
+     *
+     * @return void
+     */
+    protected function initializeCreateReceiptsAction() {
+        // Remove "*" template element
+        $newReceipts = $this->request->getArgument('newReceipts');
+        unset($newReceipts['*']);
+        $this->request->setArgument('newReceipts', $newReceipts);
+
+        // Set property mapping date format
+        $propertyMappingConfiguration = $this->arguments['newReceipts']->getPropertyMappingConfiguration();
+        $propertyMappingConfiguration->forProperty('*.date')->setTypeConverterOption(\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::class, \TYPO3\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT, 'Y-m-d');
+    }
+
+	/**
+     * Creates posted receipts
+     *
+     * @param \Doctrine\Common\Collections\Collection<\ThinkopenAt\Gnucash\Domain\Dto\Receipt> $newReceipts
+	 * @return void
+	 */
+	public function createReceiptsAction(\Doctrine\Common\Collections\Collection $newReceipts) {
+var_dump($newReceipts);
+exit();
+    }
 
 	/**
 	 * @return void
 	 */
 	public function newVendorAction() {
         $expenseAccounts = $this->accountRepository->findByAccountType('EXPENSE');
+        $vendors = $this->vendorRepository->findAll();
         $this->view->assign('expenseAccounts', $expenseAccounts);
+        $this->view->assign('vendors', $vendors);
 	}
 
 }

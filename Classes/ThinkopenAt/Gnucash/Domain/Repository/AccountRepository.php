@@ -35,5 +35,29 @@ class AccountRepository extends Repository {
 		return $query->execute();
     }
 
+    /**
+     * Finds accounts which contain the given code-element
+     *
+     * @param string $code: The code element which has to get matched
+     * @param \TYPO3\Flow\Persistence\QueryResultInterface Matching accounts
+     */
+    public function findWithCodeElement($code) {
+        $query = $this->createQuery();
+		$constraints = array();
+
+		$orderings = array(
+			'name' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_ASCENDING,
+		);
+		$query->setOrderings($orderings);
+
+		$constraints[] = $query->equals('code', $code);
+		$constraints[] = $query->like('code', '%|' . $code);
+		$constraints[] = $query->like('code', $code . '|%');
+		$constraints[] = $query->like('code', '%|' . $code . '|%');
+
+		$query->matching($query->logicalOr($constraints));
+		return $query->execute();
+	}
+
 }
 

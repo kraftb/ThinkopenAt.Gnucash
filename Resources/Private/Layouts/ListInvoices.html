@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title><f:render section="Title" /></title>
+		<style type="text/css">
+table.entry-list,
+table.invoice-list {
+	border-collapse: collapse
+}
+table.entry-list {
+	width: 100%;
+	position: relative;
+}
+table.invoice-list>tbody>tr>th {
+	white-space: nowrap;
+}
+table.invoice-list>tbody>tr>th,
+table.invoice-list>tbody>tr>td {
+    border: 1px solid black;
+    padding: 3px 10px 3px 10px;
+	vertical-align: top;
+}
+table.invoice-list>tbody>tr>td {
+	border-bottom: 3px solid black;
+}
+table.invoice-list>tbody>tr:nth-child(even)>td {
+	background-color: #ededed;
+}
+table.invoice-list>tbody>tr>th {
+	border-bottom: 3px solid black;
+}
+table.invoice-list td.entry-cell {
+    padding: 0px;
+}
+table.entry-list th,
+table.entry-list td {
+    border: 1px solid black;
+    padding: 3px 10px 3px 10px;
+	vertical-align: middle;
+	text-align: left;
+}
+table.entry-list th.entry-index,
+table.entry-list td.entry-index {
+	text-align: center;
+}
+table.invlice-list th.entry-amount,
+table.invoice-list td.entry-amount,
+table.entry-list th.entry-amount,
+table.entry-list td.entry-amount {
+	text-align: right;
+}
+table.entry-list td {
+	vertical-align: top;
+}
+table.entry-list th {
+	border-top: 0px;
+}
+table.entry-list td:first-child,
+table.entry-list th:first-child {
+	border-left: 0px;
+}
+table.entry-list td:last-child,
+table.entry-list th:last-child {
+	border-right: 0px;
+}
+
+		</style>
+		<f:base />
+	</head>
+	<body>
+		<f:flashMessages class="flashmessages" />
+
+        <f:render section="Errors" />
+
+        <f:render section="InvoiceList" />
+
+	</body>
+</html>

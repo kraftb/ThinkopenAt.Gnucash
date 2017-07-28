@@ -126,6 +126,8 @@ class AbstractBmdExportController extends AbstractGnucashController {
 
         // Retrieve part of a "|" separated key:value list
         if (isset($fieldConfig['pipePart'])) {
+            // TODO: Create util/service for retrieval of "|" separated
+            // key:value fields. Also required in Vendor domain model.
             $prefix = $fieldConfig['pipePart'] . ':';
             $parts = explode('|', $result);
             $result = '';

@@ -198,6 +198,14 @@ class StandardController extends AbstractGnucashController {
     }
 
 	/**
+	 * @return void
+	 */
+	public function listInvoicesAction() {
+		$invoices = $this->invoiceRepository->findAll();
+        $this->view->assign('invoices', $invoices);
+	}
+
+	/**
      * Initialize method for "createBill" action
      *
 	 * @return void
@@ -226,7 +234,7 @@ class StandardController extends AbstractGnucashController {
         $serviceBegin = $newBill->getServiceBegin();
         $serviceEnd = $newBill->getServiceEnd();
 
-        $notes = 'LZ:' . $serviceBegin->format('Y-m-d') . '|' . $serviceEnd->format('Y-m-d');
+        $notes = 'LZ:' . $serviceBegin->format('Y-m-d') . '~' . $serviceEnd->format('Y-m-d');
         $invoice->setNotes($notes);
 
         $this->persistInvoice($invoice);
@@ -398,6 +406,13 @@ class StandardController extends AbstractGnucashController {
         $newUid = $this->getNewUid($this->invoiceRepository);
         $invoice->setPersistenceObjectIdentifier($newUid);
 
+		// Set time to 12:00. Else the current time will be used
+		// in the date object which could yield problems at around
+		// midnight because of mismatching time zones.
+		$opened = $invoice->getOpened();
+		$opened->setTime(12, 00);
+		$invoice->setOpened($opened);
+
         $invoice->setPosted($invoice->getOpened());
 
         $invoice->setActive(true);
@@ -568,7 +583,10 @@ class StandardController extends AbstractGnucashController {
             throw new \Exception('Owner/customer ids have to be ' . $customerIdLength . ' characters long!');
         }
 
-        $accountIncome = $this->accountRepository->findByCode('CUSTOMER:' . $ownerId);
+        $accountIncome = $this->accountRepository->findWithCodeElement('CUSTOMER:' . $ownerId);
+        if (count($accountIncome) === 0) {
+            throw new \Exception('No account with code "CUSTOMER:' . $ownerId . '" found!');
+		}
         if (count($accountIncome) !== 1) {
             throw new \Exception('Only one account must have code "CUSTOMER:' . $ownerId . '" set!');
         }

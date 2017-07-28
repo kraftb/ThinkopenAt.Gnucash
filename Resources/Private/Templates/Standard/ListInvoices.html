@@ -1,0 +1,123 @@
+{namespace gc=ThinkopenAt\Gnucash\ViewHelpers}
+
+<f:layout name="ListInvoices" />
+
+<f:section name="Title">Erfasste Ausgangsrechnungen</f:section>
+
+<f:section name="InvoiceList">
+	<h1>Ausgangsrechnungen</h1>
+	<table class="invoice-list">
+		<tr>
+			<th>Rechnungsdaten</th>
+			<th>Rechnungsposten</th>
+			<th class="entry-amount">Summe Netto</th>
+			<th class="entry-amount">Umsatzsteuer</th>
+			<th class="entry-amount">Gesamt</th>
+			<th>Bezahlt</th>
+		<tr>
+		<f:for each="{invoices}" as="invoice" key="current">
+			<gc:accumulate.init key="{invoice.id}">
+			<tr>
+				<f:render section="InvoiceItem" arguments="{invoice: invoice}" />
+			</tr>
+			</gc:accumulate.init>
+		</f:for>
+	</table>
+</f:section>
+
+
+<f:section name="InvoiceItem">
+	<!-- OBJECT:{invoice.PersistenceObjectIdentifier} -->
+	<td>
+		<dl>
+			<dt>Rechnungsdatum</dt>
+			<dd><f:format.date format="Y-m-d">{invoice.opened}</f:format.date></dd>
+
+			<dt>Rechnungsnummer</dt>
+			<dd>
+				{invoice.id}
+			</dd>
+
+<f:comment>
+			<dt>Kunde</dt>
+			<dd>{invoice.owner}</dd>
+</f:comment>
+
+			<dt>Leistungszeitraum</dt>
+			<dd>
+				{invoice.serviceBegin}
+				{invoice.serviceEnd}
+			</dd>
+		</dl>
+	</td>
+	<td class="entry-cell">
+		<table class="entry-list">
+			<tr>
+				<th width="5%" class="entry-index">#</th>
+				<th width="65%">Bezeichnung</th>
+				<th width="10%" class="entry-amount">Anzahl</th>
+				<th width="10%" class="entry-amount">Preis</th>
+				<th width="10%" class="entry-amount">Netto</th>
+			</tr>
+			<f:for each="{invoice.entries}" as="entry" iteration="currentEntry">
+				<tr>
+					<f:render section="InvoiceEntry" arguments="{entry: entry, current: currentEntry}" />
+				</tr>
+			</f:for>
+		</table>
+	</td>
+	<td class="entry-amount">
+		<gc:format.amount><gc:accumulate.get key="{invoice.id}" /></gc:format.amount>
+		&euro;
+	</td>
+	<td class="entry-amount">
+		<gc:format.amount><gc:math><gc:accumulate.get key="{invoice.id}" /> * 0.20</gc:math></gc:format.amount>
+		&euro;
+	</td>
+	<td class="entry-amount">
+		<gc:format.amount><gc:math><gc:accumulate.get key="{invoice.id}" /> * 1.20</gc:math></gc:format.amount>
+		&euro;
+	</td>
+	<td>
+	</td>
+</f:section>
+
+
+
+<f:section name="InvoiceEntry">
+	<td class="entry-index">{current.cycle}</td>
+	<td>
+		<gc:format.entryDescription newline="<br />"><f:format.raw>{entry.description}</f:format.raw></gc:format.entryDescription>
+	</td>
+	<td class="entry-amount">
+		<f:if condition="{a: '{entry.quantity}'}=={a: '1'}">
+			<f:then>
+				<f:switch expression="{entry.action}">
+					<f:case value="Hours"><gc:format.amount precision="2">{entry.quantity}</gc:format.amount> h</f:case>
+					<f:case value="Months"><gc:format.amount precision="0">{entry.quantity}</gc:format.amount> Monat</f:case>
+					<f:case value="Years"><gc:format.amount precision="0">{entry.quantity}</gc:format.amount> Jahr</f:case>
+					<f:case value="Year"><gc:format.amount precision="0">{entry.quantity}</gc:format.amount> Jahr</f:case>
+					<f:defaultCase><gc:format.amount precision="0">{entry.quantity}</gc:format.amount> ?? ({entry.action})</f:defaultCase>
+				</f:switch>
+			</f:then>
+			<f:else>
+				<f:switch expression="{entry.action}">
+					<f:case value="Hours"><gc:format.amount precision="2">{entry.quantity}</gc:format.amount> h</f:case>
+					<f:case value="Months"><gc:format.amount precision="0">{entry.quantity}</gc:format.amount> Monate</f:case>
+					<f:case value="Years"><gc:format.amount precision="0">{entry.quantity}</gc:format.amount> Jahre</f:case>
+					<f:case value="Year"><gc:format.amount precision="0">{entry.quantity}</gc:format.amount> Jahre</f:case>
+					<f:defaultCase><gc:format.amount precision="0">{entry.quantity}</gc:format.amount> ?? ({entry.action})</f:defaultCase>
+				</f:switch>
+			</f:else>
+		</f:if>
+	</td>
+	<td class="entry-amount"><gc:format.amount>{entry.price}</gc:format.amount> &euro;</td>
+	<td class="entry-amount">
+		<gc:format.amount>
+			<gc:accumulate.add key="{entry.invoice.id}" returnValue="1"><gc:math>{entry.quantity} * {entry.price}</gc:math></gc:accumulate.add>
+		</gc:format.amount> &euro;</td>
+</f:section>
+
+<f:section name="Errors">
+</f:section>
+

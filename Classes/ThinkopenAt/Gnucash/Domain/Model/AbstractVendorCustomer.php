@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This domain model represents an abstract GnuCash
  * vendor domain model. In fact the properties here
  * are exactly the same as those for a vendor, but
- * the @Flow\Entity annotation can't be given to
+ * the @ Flow \ Entity annotation can't be given to
  * this domain model as it is also used by the
  * "Customer" domain model. So there is a common
  * abstract class (this one) for both the real Vendor

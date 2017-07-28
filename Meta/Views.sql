@@ -3,7 +3,7 @@ CREATE VIEW `thinkopenat_gnucash_domain_model_account` AS select `to_gnucash`.`a
 
 
 DROP VIEW `thinkopenat_gnucash_domain_model_invoice`;
-CREATE VIEW `thinkopenat_gnucash_domain_model_invoice` AS select `to_gnucash`.`invoices`.`guid` AS `persistence_object_identifier`,`to_gnucash`.`invoices`.`id` AS `id`,`to_gnucash`.`invoices`.`date_opened` AS `opened`,DATE_ADD(`to_gnucash`.`invoices`.`date_posted`, INTERVAL 3 HOUR) AS `posted`,`to_gnucash`.`invoices`.`notes` AS `notes`,`to_gnucash`.`invoices`.`active` AS `active`,`to_gnucash`.`invoices`.`currency` AS `currency`,`to_gnucash`.`invoices`.`owner_type` AS `ownerType`,`to_gnucash`.`invoices`.`owner_guid` AS `owner`,`to_gnucash`.`invoices`.`terms` AS `terms`,`to_gnucash`.`invoices`.`billing_id` AS `billingId`,`to_gnucash`.`invoices`.`post_txn` AS `transaction`,`to_gnucash`.`invoices`.`post_lot` AS `lot`,`to_gnucash`.`invoices`.`post_acc` AS `account`,`to_gnucash`.`invoices`.`billto_type` AS `billtoType`,`to_gnucash`.`invoices`.`billto_guid` AS `billto`,`to_gnucash`.`invoices`.`charge_amt_num` AS `charge_amount_num`,`to_gnucash`.`invoices`.`charge_amt_denom` AS `charge_amount_denom` from `to_gnucash`.`invoices`;
+CREATE VIEW `thinkopenat_gnucash_domain_model_invoice` AS select `to_gnucash`.`invoices`.`guid` AS `persistence_object_identifier`,`to_gnucash`.`invoices`.`id` AS `id`,`to_gnucash`.`invoices`.`date_opened` AS `opened`,`to_gnucash`.`invoices`.`date_posted` AS `posted`,`to_gnucash`.`invoices`.`notes` AS `notes`,`to_gnucash`.`invoices`.`active` AS `active`,`to_gnucash`.`invoices`.`currency` AS `currency`,`to_gnucash`.`invoices`.`owner_type` AS `ownerType`,`to_gnucash`.`invoices`.`owner_guid` AS `owner`,`to_gnucash`.`invoices`.`terms` AS `terms`,`to_gnucash`.`invoices`.`billing_id` AS `billingId`,`to_gnucash`.`invoices`.`post_txn` AS `transaction`,`to_gnucash`.`invoices`.`post_lot` AS `lot`,`to_gnucash`.`invoices`.`post_acc` AS `account`,`to_gnucash`.`invoices`.`billto_type` AS `billtoType`,`to_gnucash`.`invoices`.`billto_guid` AS `billto`,`to_gnucash`.`invoices`.`charge_amt_num` AS `charge_amount_num`,`to_gnucash`.`invoices`.`charge_amt_denom` AS `charge_amount_denom` from `to_gnucash`.`invoices`;
 
 
 CREATE VIEW `thinkopenat_gnucash_domain_model_split` AS select `to_gnucash`.`splits`.`guid` AS `persistence_object_identifier`,`to_gnucash`.`splits`.`tx_guid` AS `transaction`,`to_gnucash`.`splits`.`account_guid` AS `account`,`to_gnucash`.`splits`.`memo` AS `memo`,`to_gnucash`.`splits`.`action` AS `action`,`to_gnucash`.`splits`.`reconcile_state` AS `reconcile_state`,`to_gnucash`.`splits`.`reconcile_date` AS `reconcile_date`,`to_gnucash`.`splits`.`value_num` AS `value_num`,`to_gnucash`.`splits`.`value_denom` AS `value_denom`,`to_gnucash`.`splits`.`quantity_num` AS `quantity_num`,`to_gnucash`.`splits`.`quantity_denom` AS `quantity_denom`, lot_guid AS lot from `to_gnucash`.`splits`
@@ -108,7 +108,7 @@ AS SELECT
     `to_gnucash`.`transactions`.`guid` AS `persistence_object_identifier`,
     `to_gnucash`.`transactions`.`currency_guid` AS `currency`,
     `to_gnucash`.`transactions`.`num` AS `number`,
-    DATE_ADD(`to_gnucash`.`transactions`.`post_date`, INTERVAL 3 HOURS) AS `postDate`,
+    `to_gnucash`.`transactions`.`post_date` AS `postDate`,
     `to_gnucash`.`transactions`.`enter_date` AS `enterDate`,
     `to_gnucash`.`transactions`.`description` AS `description`
 from `to_gnucash`.`transactions`;
