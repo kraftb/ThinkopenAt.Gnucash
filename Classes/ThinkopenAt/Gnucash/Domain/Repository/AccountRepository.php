@@ -12,7 +12,7 @@ use TYPO3\Flow\Persistence\Repository;
 /**
  * @Flow\Scope("singleton")
  */
-class AccountRepository extends Repository {
+class AccountRepository extends AbstractGnucashRepository {
 
     /**
      * Finds all accounts whose parent has assigned a specific code
@@ -39,7 +39,7 @@ class AccountRepository extends Repository {
      * Finds accounts which contain the given code-element
      *
      * @param string $code: The code element which has to get matched
-     * @param \TYPO3\Flow\Persistence\QueryResultInterface Matching accounts
+     * @return \TYPO3\Flow\Persistence\QueryResultInterface Matching accounts
      */
     public function findWithCodeElement($code) {
         $query = $this->createQuery();
@@ -58,6 +58,22 @@ class AccountRepository extends Repository {
 		$query->matching($query->logicalOr($constraints));
 		return $query->execute();
 	}
+
+    /**
+     * Finds all accounts having the given tag
+     *
+     * @param \TYPO3\Flow\Persistence\QueryResultInterface $tags: The tags which any of the accounts must match
+     * @return \TYPO3\Flow\Persistence\QueryResultInterface The matching accounts
+     */
+    public function findByTags(\TYPO3\Flow\Persistence\QueryResultInterface $tags) {
+		$query = $this->createQuery();
+		$constraints = array();
+
+        $constraints[] = $query->in('tags.Persistence_Object_Identifier', $tags->toArray());
+
+        $query->matching($query->logicalAnd($constraints));
+        return $query->execute();
+    }
 
 }
 

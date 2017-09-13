@@ -1,0 +1,57 @@
+		   74 Query	COMMIT
+170817 20:26:33	   74 Query	BEGIN
+		   74 Query	UPDATE taxtables SET name='Umsatzsteuer',refcount=38,invisible=0,parent=NULL WHERE guid = 'd59ebcd8e4a4c6dff83b8c60bb52dbcc'
+		   74 Query	SELECT * FROM slots WHERE obj_guid='d59ebcd8e4a4c6dff83b8c60bb52dbcc' and slot_type in ('9', '8') and not guid_val is null
+		   74 Query	DELETE FROM slots  WHERE obj_guid = 'd59ebcd8e4a4c6dff83b8c60bb52dbcc'
+		   74 Query	DELETE FROM taxtable_entries  WHERE taxtable = 'd59ebcd8e4a4c6dff83b8c60bb52dbcc'
+		   74 Query	INSERT INTO taxtable_entries(taxtable,account,amount_num,amount_denom,type) VALUES('d59ebcd8e4a4c6dff83b8c60bb52dbcc','961cb1d6cb4763065f804de702757c43',2000000,100000,2)
+		   74 Query	COMMIT
+		   74 Query	BEGIN
+		   74 Query	UPDATE taxtables SET name='Umsatzsteuer',refcount=37,invisible=0,parent=NULL WHERE guid = 'd59ebcd8e4a4c6dff83b8c60bb52dbcc'
+		   74 Query	SELECT * FROM slots WHERE obj_guid='d59ebcd8e4a4c6dff83b8c60bb52dbcc' and slot_type in ('9', '8') and not guid_val is null
+		   74 Query	DELETE FROM slots  WHERE obj_guid = 'd59ebcd8e4a4c6dff83b8c60bb52dbcc'
+		   74 Query	DELETE FROM taxtable_entries  WHERE taxtable = 'd59ebcd8e4a4c6dff83b8c60bb52dbcc'
+		   74 Query	INSERT INTO taxtable_entries(taxtable,account,amount_num,amount_denom,type) VALUES('d59ebcd8e4a4c6dff83b8c60bb52dbcc','961cb1d6cb4763065f804de702757c43',2000000,100000,2)
+		   74 Query	COMMIT
+		   74 Query	BEGIN
+		   74 Query	SELECT guid FROM commodities WHERE guid = '184b10e155fbcd07dde67cf73ac56c0f'
+		   74 Query	INSERT INTO transactions(guid,currency_guid,num,post_date,enter_date,description) VALUES('29f3888a0c21c56c42a45c883abf2122','184b10e155fbcd07dde67cf73ac56c0f','2017/009','20170425220000','20170817182633','webconsulting business services GmbH')
+		   74 Query	INSERT INTO slots(obj_guid,name,slot_type,int64_val,string_val,double_val,timespec_val,guid_val,numeric_val_num,numeric_val_denom,gdate_val) VALUES('29f3888a0c21c56c42a45c883abf2122','trans-date-due',6,0,NULL,0,'20170523220000',NULL,0,1,NULL)
+		   74 Query	INSERT INTO slots(obj_guid,name,slot_type,int64_val,string_val,double_val,timespec_val,guid_val,numeric_val_num,numeric_val_denom,gdate_val) VALUES('29f3888a0c21c56c42a45c883abf2122','gncInvoice',9,0,NULL,0,NULL,'3aff69bcd0a2311193c80ee826f02972',0,1,NULL)
+		   74 Query	INSERT INTO slots(obj_guid,name,slot_type,int64_val,string_val,double_val,timespec_val,guid_val,numeric_val_num,numeric_val_denom,gdate_val) VALUES('3aff69bcd0a2311193c80ee826f02972','gncInvoice/invoice-guid',5,0,NULL,0,NULL,'d8bccf47fc06854312c6ce05c6694133',0,1,NULL)
+		   74 Query	INSERT INTO slots(obj_guid,name,slot_type,int64_val,string_val,double_val,timespec_val,guid_val,numeric_val_num,numeric_val_denom,gdate_val) VALUES('29f3888a0c21c56c42a45c883abf2122','trans-read-only',4,0,'Generated from an invoice. Try unposting the invoice.',0,NULL,NULL,0,1,NULL)
+		   74 Query	INSERT INTO slots(obj_guid,name,slot_type,int64_val,string_val,double_val,timespec_val,guid_val,numeric_val_num,numeric_val_denom,gdate_val) VALUES('29f3888a0c21c56c42a45c883abf2122','trans-txn-type',4,0,'I',0,NULL,NULL,0,1,NULL)
+		   74 Query	COMMIT
+		   74 Query	BEGIN
+		   74 Query	INSERT INTO splits(guid,tx_guid,account_guid,memo,action,reconcile_state,reconcile_date,value_num,value_denom,quantity_num,quantity_denom,lot_guid) VALUES('2bfe4190f334b2ffccd83da627f1fce8','29f3888a0c21c56c42a45c883abf2122','961cb1d6cb4763065f804de702757c43','','Invoice','n',NULL,-9750,100,-9750,100,NULL)
+		   74 Query	COMMIT
+		   74 Query	BEGIN
+		   74 Query	INSERT INTO splits(guid,tx_guid,account_guid,memo,action,reconcile_state,reconcile_date,value_num,value_denom,quantity_num,quantity_denom,lot_guid) VALUES('2d4fcb4efd718a9d15f8824d22f8639e','29f3888a0c21c56c42a45c883abf2122','c2394cb823a8bd2bbfb70ec79a960c69','','Invoice','n',NULL,-48750,100,-48750,100,NULL)
+		   74 Query	COMMIT
+		   74 Query	BEGIN
+		   74 Query	INSERT INTO splits(guid,tx_guid,account_guid,memo,action,reconcile_state,reconcile_date,value_num,value_denom,quantity_num,quantity_denom,lot_guid) VALUES('811d4c6c9597fc8b765dbc6ebb981877','29f3888a0c21c56c42a45c883abf2122','1c21fd5feead89399ef075197858da6e','','Invoice','n',NULL,58500,100,58500,100,'dada167b0f03fc90455a805a8d3ae586')
+		   74 Query	COMMIT
+		   74 Query	BEGIN
+		   74 Query	INSERT INTO lots(guid,account_guid,is_closed) VALUES('dada167b0f03fc90455a805a8d3ae586','1c21fd5feead89399ef075197858da6e',-1)
+		   74 Query	INSERT INTO slots(obj_guid,name,slot_type,int64_val,string_val,double_val,timespec_val,guid_val,numeric_val_num,numeric_val_denom,gdate_val) VALUES('dada167b0f03fc90455a805a8d3ae586','title',4,0,'Invoice 2017/009',0,NULL,NULL,0,1,NULL)
+		   74 Query	INSERT INTO slots(obj_guid,name,slot_type,int64_val,string_val,double_val,timespec_val,guid_val,numeric_val_num,numeric_val_denom,gdate_val) VALUES('dada167b0f03fc90455a805a8d3ae586','gncInvoice',9,0,NULL,0,NULL,'0320d12a49e7b2d8a4593db4e2fe5952',0,1,NULL)
+		   74 Query	INSERT INTO slots(obj_guid,name,slot_type,int64_val,string_val,double_val,timespec_val,guid_val,numeric_val_num,numeric_val_denom,gdate_val) VALUES('0320d12a49e7b2d8a4593db4e2fe5952','gncInvoice/invoice-guid',5,0,NULL,0,NULL,'d8bccf47fc06854312c6ce05c6694133',0,1,NULL)
+		   74 Query	COMMIT
+		   74 Query	BEGIN
+		   74 Query	SELECT guid FROM commodities WHERE guid = '184b10e155fbcd07dde67cf73ac56c0f'
+		   74 Query	UPDATE invoices SET id='2017/009',date_opened='20170426120000',date_posted='20170425220000',notes='LZ:2017-03-01~2017-04-26',active=1,currency='184b10e155fbcd07dde67cf73ac56c0f',owner_type=2,owner_guid='d97b9ae062f1de4310746d26c1e520e3',terms='4238cf5c5217622a01f5e503c94ea02c',billing_id='',post_txn='29f3888a0c21c56c42a45c883abf2122',post_lot='dada167b0f03fc90455a805a8d3ae586',post_acc='1c21fd5feead89399ef075197858da6e',billto_type=2,billto_guid=NULL,charge_amt_num=0,charge_amt_denom=1 WHERE guid = 'd8bccf47fc06854312c6ce05c6694133'
+		   74 Query	SELECT * FROM slots WHERE obj_guid='d8bccf47fc06854312c6ce05c6694133' and slot_type in ('9', '8') and not guid_val is null
+		   74 Query	DELETE FROM slots  WHERE obj_guid = 'd8bccf47fc06854312c6ce05c6694133'
+		   74 Query	COMMIT
+		   74 Query	BEGIN
+		   74 Query	DELETE FROM entries  WHERE guid = '5a34f21310f01137f877a701c6e1d1e2'
+		   74 Query	SELECT * FROM slots WHERE obj_guid='5a34f21310f01137f877a701c6e1d1e2' and slot_type in ('9', '8') and not guid_val is null
+		   74 Query	DELETE FROM slots  WHERE obj_guid = '5a34f21310f01137f877a701c6e1d1e2'
+		   74 Query	COMMIT
+		   74 Query	BEGIN
+		   74 Query	UPDATE taxtables SET name='Umsatzsteuer',refcount=36,invisible=0,parent=NULL WHERE guid = 'd59ebcd8e4a4c6dff83b8c60bb52dbcc'
+		   74 Query	SELECT * FROM slots WHERE obj_guid='d59ebcd8e4a4c6dff83b8c60bb52dbcc' and slot_type in ('9', '8') and not guid_val is null
+		   74 Query	DELETE FROM slots  WHERE obj_guid = 'd59ebcd8e4a4c6dff83b8c60bb52dbcc'
+		   74 Query	DELETE FROM taxtable_entries  WHERE taxtable = 'd59ebcd8e4a4c6dff83b8c60bb52dbcc'
+		   74 Query	INSERT INTO taxtable_entries(taxtable,account,amount_num,amount_denom,type) VALUES('d59ebcd8e4a4c6dff83b8c60bb52dbcc','961cb1d6cb4763065f804de702757c43',2000000,100000,2)
+		   74 Query	COMMIT

@@ -75,6 +75,15 @@ class Account extends AbstractGnucashModel {
 	 */	 
 	protected $commodity = '';
 
+	/**
+	 * This "tags" are not a real table (in which database whatsoever) but rather only a quite
+	 * complex view upon the "code" field of the account table.
+	 *
+	 * @var \SplObjectStorage<\ThinkopenAt\Gnucash\Domain\Model\AccountTag>
+	 * @ORM\OneToMany(mappedBy="account")
+	 */	 
+	protected $tags = NULL;
+
 
     /**
      * Returns the parent of this account
@@ -207,6 +216,25 @@ class Account extends AbstractGnucashModel {
      */
     public function setCommodity(\ThinkopenAt\Gnucash\Domain\Model\Currency $commodity) {
         $this->commodity = $commodity;
+    }
+
+    /**
+     * Returns the tags of this account
+     * 
+	 * @return \SplObjectStorage The tags of this account
+     */
+    public function getTags() {
+        return $this->tags;
+    }
+
+    /**
+     * Sets the tags of this account
+     * 
+	 * @param \SplObjectStorage $tags: The tags of this account
+     * @return void
+     */
+    public function setTags(\SplObjectStorage $tags) {
+        $this->tags = $tags;
     }
 
 }

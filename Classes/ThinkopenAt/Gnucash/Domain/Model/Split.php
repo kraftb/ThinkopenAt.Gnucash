@@ -125,6 +125,27 @@ class Split extends AbstractGnucashModel {
 	 */	
 	protected $lot = NULL;
 
+	/**
+	 * The "otherSplit" of this transaction. This represents the other side
+	 * of the booking entry. Will only be set for a transaction containing
+	 * exactly 2 splits (or an additional VAT split) and will not be set
+	 * automatically.
+	 *
+	 * @var \ThinkopenAt\Gnucash\Domain\Model\Split
+     * @Flow\Transient
+	 */	 
+	protected $otherSplit = NULL;
+
+	/**
+	 * A VAT split. If a transaction split is pointing to one of the VAT
+	 * accounts and configuration is set properly the VAT split of a transaction
+	 * can get separated away.
+	 *
+	 * @var \ThinkopenAt\Gnucash\Domain\Model\Split
+     * @Flow\Transient
+	 */	 
+	protected $vatSplit = NULL;
+
 
     /**
      * Injects the value and quantity fraction instances
@@ -309,6 +330,44 @@ class Split extends AbstractGnucashModel {
      */
     public function setLot(\ThinkopenAt\Gnucash\Domain\Model\Lot $lot) {
         $this->lot = $lot;
+    }
+
+    /**
+     * Returns the "other" split from the transaction this split belongs to.
+     *
+	 * @return \ThinkopenAt\Gnucash\Domain\Model\Split The "other" side of this split
+     */
+    public function getOtherSplit() {
+        return $this->otherSplit;
+    }
+
+    /**
+     * Sets the "other" split for the transaction this split belongs to.
+     *
+	 * @param \ThinkopenAt\Gnucash\Domain\Model\Split $otherSplit: The "other" side of this splits transaction
+     * @return void
+     */
+    public function setOtherSplit(\ThinkopenAt\Gnucash\Domain\Model\Split $otherSplit) {
+        $this->otherSplit = $otherSplit;
+    }
+
+    /**
+     * Returns the VAT split from the transaction this split belongs to.
+     *
+	 * @return \ThinkopenAt\Gnucash\Domain\Model\Split The VAT split of this splits transaction
+     */
+    public function getVatSplit() {
+        return $this->vatSplit;
+    }
+
+    /**
+     * Sets the VAT split for the transaction this split belongs to.
+     *
+	 * @param \ThinkopenAt\Gnucash\Domain\Model\Split $vatSplit: The VAT split of this splits transaction
+     * @return void
+     */
+    public function setVatSplit(\ThinkopenAt\Gnucash\Domain\Model\Split $vatSplit) {
+        $this->vatSplit = $vatSplit;
     }
 
 }

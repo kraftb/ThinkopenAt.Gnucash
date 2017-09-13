@@ -1,0 +1,30 @@
+
+
+                   74 Query     COMMIT
+                   74 Query     BEGIN
+                   74 Query     SELECT guid FROM commodities WHERE guid = '184b10e155fbcd07dde67cf73ac56c0f'
+                   74 Query     INSERT INTO transactions(guid,currency_guid,num,post_date,enter_date,description) VALUES('41d7403d38a2d373c90869089f263164','184b10e155fbcd07dde67cf73ac56c0f','2017/009','20170425220000','20170817181819','webconsulting business services GmbH')
+                   74 Query     INSERT INTO slots(obj_guid,name,slot_type,int64_val,string_val,double_val,timespec_val,guid_val,numeric_val_num,numeric_val_denom,gdate_val) VALUES('41d7403d38a2d373c90869089f263164','trans-date-due',6,0,NULL,0,'20170523220000',NULL,0,1,NULL)
+                   74 Query     INSERT INTO slots(obj_guid,name,slot_type,int64_val,string_val,double_val,timespec_val,guid_val,numeric_val_num,numeric_val_denom,gdate_val) VALUES('41d7403d38a2d373c90869089f263164','trans-read-only',4,0,'Generated from an invoice. Try unposting the invoice.',0,NULL,NULL,0,1,NULL)
+                   74 Query     COMMIT
+                   74 Query     BEGIN
+                   74 Query     INSERT INTO splits(guid,tx_guid,account_guid,memo,action,reconcile_state,reconcile_date,value_num,value_denom,quantity_num,quantity_denom,lot_guid) VALUES('e952e581e860eaad5a6b896a118d9885','41d7403d38a2d373c90869089f263164','961cb1d6cb4763065f804de702757c43','','Invoice','n',NULL,-9750,100,-9750,100,NULL)
+                   74 Query     COMMIT
+                   74 Query     BEGIN
+                   74 Query     INSERT INTO splits(guid,tx_guid,account_guid,memo,action,reconcile_state,reconcile_date,value_num,value_denom,quantity_num,quantity_denom,lot_guid) VALUES('32010add0b9258c3a5569843e097369f','41d7403d38a2d373c90869089f263164','c2394cb823a8bd2bbfb70ec79a960c69','','Invoice','n',NULL,-48750,100,-48750,100,NULL)
+                   74 Query     COMMIT
+                   74 Query     BEGIN
+                   74 Query     INSERT INTO splits(guid,tx_guid,account_guid,memo,action,reconcile_state,reconcile_date,value_num,value_denom,quantity_num,quantity_denom,lot_guid) VALUES('24f13702178bff52530141eae6003b15','41d7403d38a2d373c90869089f263164','1c21fd5feead89399ef075197858da6e','','Invoice','n',NULL,58500,100,58500,100,'60aa08a34eb9e464261f790550029f23')
+                   74 Query     COMMIT
+                   74 Query     BEGIN
+                   74 Query     INSERT INTO lots(guid,account_guid,is_closed) VALUES('60aa08a34eb9e464261f790550029f23','1c21fd5feead89399ef075197858da6e',-1)
+                   74 Query     INSERT INTO slots(obj_guid,name,slot_type,int64_val,string_val,double_val,timespec_val,guid_val,numeric_val_num,numeric_val_denom,gdate_val) VALUES('60aa08a34eb9e464261f790550029f23','title',4,0,'Invoice 2017/009',0,NULL,NULL,0,1,NULL)
+                   74 Query     COMMIT
+                   74 Query     BEGIN
+                   74 Query     SELECT guid FROM commodities WHERE guid = '184b10e155fbcd07dde67cf73ac56c0f'
+                   74 Query     UPDATE invoices SET id='2017/009',date_opened='20170426120000',date_posted='20170425220000',notes='LZ:2017-03-01~2017-04-26',active=1,currency='184b10e155fbcd07dde67cf73ac56c0f',owner_type=2,owner_guid='d97b9ae062f1de4310746d26c1e520e3',terms='4238cf5c5217622a01f5e503c94ea02c',billing_id='',post_txn='17029536f27d781109c61f7848880d05',post_lot='93f4deaff8cba492910405a963418536',post_acc='1c21fd5feead89399ef075197858da6e',billto_type=2,billto_guid=NULL,charge_amt_num=0,charge_amt_denom=1 WHERE guid = 'd8bccf47fc06854312c6ce05c6694133'
+                   74 Query     SELECT * FROM slots WHERE obj_guid='d8bccf47fc06854312c6ce05c6694133' and slot_type in ('9', '8') and not guid_val is null
+                   74 Query     DELETE FROM slots  WHERE obj_guid = 'd8bccf47fc06854312c6ce05c6694133'
+                   74 Query     COMMIT
+
+

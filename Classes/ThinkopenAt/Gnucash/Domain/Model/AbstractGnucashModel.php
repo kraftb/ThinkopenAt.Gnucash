@@ -18,7 +18,6 @@ use Doctrine\Common\Collections\Collection;
  */
 abstract class AbstractGnucashModel {
 
-
     /**
      * The object should printed its UID when converted to string
      *

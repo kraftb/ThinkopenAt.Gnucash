@@ -10,17 +10,47 @@
     <ul>
         <li>
             <f:link.action action="outgoingInvoices">
-                Ausgangsrechnungen
+                I: Ausgangsrechnungen
             </f:link.action>
         </li>
         <li>
-            <f:link.action action="incomingInvoices">
-                Eingangsrechnungen
+            <f:link.action action="exportCategory" arguments="{category: '6'}">
+                II: Kontenklasse 6: Personalaufwand
             </f:link.action>
         </li>
         <li>
-            <f:link.action action="wages">
-                Gehälter
+            <f:link.action action="exportCategory" arguments="{category: '8'}">
+                III: Kontenklasse 8: Finanzerträge und Steuern (TODO)
+            </f:link.action>
+        </li>
+        <li>
+            <f:link.action action="exportCategory" arguments="{category: '7'}">
+                IV: Kontenklasse 7: Abschreibungen
+            </f:link.action>
+        </li>
+        <li>
+            <f:link.action action="exportCategory" arguments="{category: '5'}">
+                V: Kontenklasse 5: Materialaufwand und Fremdleistungen (exklusive Bezugsspesen)
+            </f:link.action>
+        </li>
+        <li>
+            <f:link.action action="exportTransfer" arguments="{category1: '3', category2: '2'}">
+                VI: Kontenklassentransfer 3 &lt;=&gt; 2: Bezahlte Forderungen und Gutschriften
+            </f:link.action>
+        </li>
+        <li>
+            <f:link.action action="exportCategory" arguments="{category: '35300'}">
+                VII: Finanzamt Verrechnungskonto
+            </f:link.action>
+        </li>
+        <li>
+            <f:link.action action="exportCategory" arguments="{category: '28950'}">
+                VIII: Schwebende Geldbewegungen
+            </f:link.action>
+        </li>
+        <li>
+            <f:link.action action="exportCategory" arguments="{category: '70400'}">
+                IX: Geringwertige Wirtschaftsgüter
             </f:link.action>
         </li>
     </ul>

@@ -110,7 +110,7 @@ class StandardController extends AbstractGnucashController {
 	public function vatDeclarationAction() {
         // TODO: Make export year/quarter configurable via interface
         $year = 2017;
-        $quarter = 1;
+        $quarter = 3;
 
         $company = $this->settings['Setup']['CompanyName'];
         $taxId = $this->settings['Setup']['TaxId'];
@@ -552,13 +552,15 @@ class StandardController extends AbstractGnucashController {
 
         $splitIncome = $this->generateInvoiceSplitBase($invoice);
         $splitIncome->setAccount($accountIncome);
-        $splitIncome->setValue($sums['net']);
-        $splitIncome->setQuantity($sums['net']);
+		$invNet = $sums['net']->negate();
+        $splitIncome->setValue($invNet);
+        $splitIncome->setQuantity($invNet);
 
         $splitVat = $this->generateInvoiceSplitBase($invoice);
         $splitVat->setAccount($accountVat);
-        $splitVat->setValue($sums['vat']);
-        $splitVat->setQuantity($sums['vat']);
+		$invVat = $sums['vat']->negate();
+        $splitVat->setValue($invVat);
+        $splitVat->setQuantity($invVat);
 
         $splits = $this->objectManager->get(ArrayCollection::class);
         $splits->add($splitPost);

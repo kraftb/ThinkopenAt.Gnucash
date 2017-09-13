@@ -1,0 +1,199 @@
+<?php
+namespace ThinkopenAt\Gnucash\Controller;
+
+/*                                                                        *
+ * This script belongs to the TYPO3 Flow package "ThinkopenAt.TimeFlies". *
+ *                                                                        *
+ *                                                                        */
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Mvc\Controller\ActionController;
+use TYPO3\Flow\Utility\Arrays;
+
+class BmdExportController extends AbstractBmdExportController {
+
+    /**
+     * Export configuration for the various export type.
+     * This is somehow a BMD/Gnucash field mapping.
+     *
+     * TODO: Eventually move this to a yaml configuration file?
+     *
+     * @var array
+     */
+    protected $exportConfig = [
+        'incoming' => [
+            'AT' => [
+                'satzart' => 0,
+                'konto' => [
+                    'field' => 'account.code',
+// STOPPED
+                    'pipePart' => 'BMD',
+                ],
+                'gkonto' => '50000',
+                'belegnr' => [
+                    'field' => 'transaction.number',
+                ],
+                'belegdatum' => [
+                    'field' => 'transaction.postDate',
+                ],
+                'buchsymbol' => 'ER',
+                'buchcode' => '2',
+                'prozent' => '20',
+                'steuercode' => '2',
+            ],
+        ],
+        'outgoing' => [
+            'AT' => [
+                'satzart' => 0,
+//                'konto' => '200000',
+                'konto' => [
+                    'field' => 'account.code',
+                    'pipePart' => 'BMD',
+                ],
+                'gkonto' => '40000',
+                'belegdatum' => [
+                    'field' => 'transaction.postDate',
+                ],
+                'belegnr' => [
+                    'field' => 'transaction.number',
+                ],
+                'buchsymbol' => 'AR',
+                'buchcode' => '1',
+                'steuercode' => '1',
+                'prozent' => '20',
+                'betrag' => [
+                    'field' => 'quantity',
+                    'factor' => -1.2,
+                    'numberFormat' => array(2, ',', ''),
+                ],
+                'steuer' => [
+                    'field' => 'quantity',
+                    'factor' => 0.2,
+                    'numberFormat' => array(2, ',', ''),
+                ],
+                'text' => [
+                    'field' => 'transaction.description',
+                ],
+            ],
+            'EU' => [
+                'satzart' => 0,
+//                'konto' => '200000',
+                'konto' => [
+                    'field' => 'account.code',
+                    'pipePart' => 'BMD',
+                ],
+                'gkonto' => '41130',
+                'belegdatum' => [
+                    'field' => 'transaction.postDate',
+                ],
+                'belegnr' => [
+                    'field' => 'transaction.number',
+                ],
+                'buchsymbol' => 'AR',
+                'buchcode' => '1',
+                'steuercode' => '77',
+                'prozent' => '0',
+                'betrag' => [
+                    'field' => 'quantity',
+                    'factor' => -1,
+                    'numberFormat' => array(2, ',', ''),
+                ],
+                'steuer' => '0',
+                'text' => [
+                    'field' => 'transaction.description',
+                ],
+            ],
+        ]
+    ];
+
+
+    /**
+     * @return void
+     */
+    public function indexAction() {
+    }
+
+	/**
+	 * @return void
+	 */
+	public function outgoingInvoicesAction() {
+        $year = 2016;
+        $begin = $this->getQuarterStart($year, 1);
+        $end = $this->getQuarterEnd($year, 4);
+
+        $this->controllerContext->getResponse()->setHeader('Content-Type', 'text/csv');
+
+        $accountsIncomeAt = $this->accountRepository->findChildrenByCode('VAT-INCOME-AT');
+        $accountsIncomeEu = $this->accountRepository->findChildrenByCode('VAT-INCOME-EU');
+        $accountsIncomeWw = $this->accountRepository->findChildrenByCode('VAT-INCOME-WW');
+
+        $splitsIncomeAt = $this->splitRepository->findByPostDateRangeAndAccount($begin, $end, $accountsIncomeAt);
+        $splitsIncomeEu = $this->splitRepository->findByPostDateRangeAndAccount($begin, $end, $accountsIncomeEu);
+        $splitsIncomeWw = $this->splitRepository->findByPostDateRangeAndAccount($begin, $end, $accountsIncomeWw);
+
+        $result = '';
+        $result .= $this->bmdExportHead($this->exportConfig['outgoing']['AT']);
+        $result .= $this->bmdExport($splitsIncomeAt, $this->exportConfig['outgoing']['AT']);
+        $result .= $this->bmdExport($splitsIncomeEu, $this->exportConfig['outgoing']['EU']);
+        // TODO: Weltweite Umsätze entsprechend ausgeben.
+        return $result;
+	}
+
+	/**
+	 * @return void
+	 */
+	public function incomingInvoicesAction() {
+        $year = 2016;
+        $begin = $this->getQuarterStart($year, 1);
+        $end = $this->getQuarterEnd($year, 4);
+
+        $this->controllerContext->getResponse()->setHeader('Content-Type', 'text/csv');
+
+        $accountsExpenseAt = $this->accountRepository->findChildrenByCode('EXPENSES-AT');
+
+        $splitsExpensesAt = $this->splitRepository->findByPostDateRangeAndAccount($begin, $end, $accountsExpenseAt);
+
+        $result = '';
+        $result .= $this->bmdExportHead($this->exportConfig['incoming']['AT']);
+        $result .= $this->bmdExport($splitsExpensesAt, $this->exportConfig['incoming']['AT']);
+        return $result;
+
+    }
+
+	/**
+	 * Exports all transactions of a specific category
+	 *
+	 * @param string $category: The category which to export (as tagged by "BMD:" attribute)
+	 * @return void
+	 */
+	public function exportCategoryAction($category) {
+        $year = 2016;
+        $begin = $this->getQuarterStart($year, 1);
+        $end = $this->getQuarterEnd($year, 4);
+
+		if (preg_match('/[^0-9]/', $category)) {
+			throw new \Exception('Invalid characters in category!');
+		}
+
+//        $this->controllerContext->getResponse()->setHeader('Content-Type', 'text/csv');
+
+		$tags = $this->accountTagRepository->findByTagLike('BMD:' . $category . '%');
+var_dump($tags);
+exit();
+        $taggedAccounts = $this->accountRepository->findByTags($tags);
+print_r(count($taggedAccounts));
+exit();
+
+        $exportSplits = $this->splitRepository->findByPostDateRangeAndAccount($begin, $end, $taggedAccounts);
+
+        $result = '';
+        $result .= $this->bmdExportHead($this->exportConfig['incoming']['AT']);
+        $result .= $this->bmdExport($exportSplits, $this->exportConfig['incoming']['AT']);
+        return $result;
+	}
+
+}
+

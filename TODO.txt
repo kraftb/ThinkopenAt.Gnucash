@@ -1,0 +1,7 @@
+
+ * ER, BK und KA besser auftrennen
+ * Buchung von 7er Klasse direkt auf Giro (Bankspesen, Spenden, etc. sind BK)
+ * Buchung von 7er Klasse direkt auf Bar (Fahrkarten, Kassabons, etc. sind KA)
+ * Sowohl ER, BK als auch KA beginnen bei 1
+
+

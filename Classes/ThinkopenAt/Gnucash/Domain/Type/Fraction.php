@@ -118,6 +118,17 @@ class Fraction {
     }
 
     /**
+     * Returns a new fraction with inverted signs.
+     * 
+	 * @return \ThinkopenAt\Gnucash\Domain\Type\Fraction The inverted/negated value
+     */
+    public function negate() {
+        $result = clone($this);
+		$result->setNumerator(-$result->getNumerator());
+		return $result;
+	}
+
+    /**
      * Returns a new fraction containing the current value as absolute (non negative) value
      * 
 	 * @return \ThinkopenAt\Gnucash\Domain\Type\Fraction The value converted to string
@@ -161,10 +172,24 @@ class Fraction {
 	 * @return string The value converted to string
      */
     public function __toString() {
-        if ($this->getDenominator()%10 === 0) {
+		$denominator = $this->getDenominator();
+        if (preg_match('/^1(0*)$/', $denominator, $matches)) {
             $value = (string)$this->getNumerator();
-            $exp = round(log($this->getDenominator())/log(10));
-            return substr($value, 0, -$exp) . '.' . substr($value, -$exp);
+			$zeros = strlen($matches[1]);
+			$sign = '';
+			if (substr($value, 0, 1) === '-') {
+				$value = substr($value, 1);
+				$sign = '-';
+			}
+			$preComma = substr($value, 0, -$zeros);
+			$postComma = substr($value, -$zeros);
+			if (strlen($preComma) === 0) {
+				$preComma = '0';
+			}
+			if (strlen($postComma) < $zeros) {
+				$postComma = str_pad($postComma, $zeros, '0', STR_PAD_LEFT);
+			}
+            return $sign . $preComma . '.' . $postComma;
         } else {
             return (string)$this->toFloat();
         }
