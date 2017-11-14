@@ -181,15 +181,21 @@ class Fraction {
 				$value = substr($value, 1);
 				$sign = '-';
 			}
-			$preComma = substr($value, 0, -$zeros);
-			$postComma = substr($value, -$zeros);
+			if ($zeros === 0) {
+				$preComma = $value;
+				$postComma = '';
+			} else {
+				$preComma = substr($value, 0, -$zeros);
+				$postComma = substr($value, -$zeros);
+			}
 			if (strlen($preComma) === 0) {
 				$preComma = '0';
 			}
 			if (strlen($postComma) < $zeros) {
 				$postComma = str_pad($postComma, $zeros, '0', STR_PAD_LEFT);
 			}
-            return $sign . $preComma . '.' . $postComma;
+			$result = $sign . $preComma . (strlen($postComma) ? ('.' . $postComma) : '');
+			return $result;
         } else {
             return (string)$this->toFloat();
         }
