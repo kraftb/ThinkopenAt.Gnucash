@@ -97,7 +97,7 @@
 					<f:case value="Months"><gc:format.amount precision="0">{entry.quantity}</gc:format.amount> Monat</f:case>
 					<f:case value="Years"><gc:format.amount precision="0">{entry.quantity}</gc:format.amount> Jahr</f:case>
 					<f:case value="Year"><gc:format.amount precision="0">{entry.quantity}</gc:format.amount> Jahr</f:case>
-					<f:defaultCase><gc:format.amount precision="0">{entry.quantity}</gc:format.amount> ?? ({entry.action})</f:defaultCase>
+					<f:defaultCase>Pauschale</f:defaultCase>
 				</f:switch>
 			</f:then>
 			<f:else>
