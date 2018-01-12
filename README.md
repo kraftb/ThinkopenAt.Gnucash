@@ -15,12 +15,26 @@ allows to interface with the mysql based Gnucash storage backend.
 Currently the implemented application allows to summarize transactions
 for outgoing and incoming invoices/bills. The generated report can
 be used to deliver the quarterly (or monthly) company VAT tax statement
-as required by the Austrian fiscal authorities. The German term is
+as required by the Austrian fiscal authorities. The German (Austrian) term is
 "Umsatzsteuervoranmeldung".
 
 Next to a printable HTML report an XML file can get generated which
 allows direct import into the Austrian finance office web application
 "finanzonline.at".
+
+The new version also contains a rudimental attempt to export the
+GnuCash accounts to a format which can get imported into the
+BMD book keeping software which is used by many tax consultants.
+
+The export can get configured from within a PHP array - so it should be
+possible to adopt the application/export-settings to your GnuCash setup.
+It can get assumed, that not all companies or freelancers which use GnuCash
+have the same account setup.
+
+It is most probably a question of taste whether one should adopt the
+book keeping account setup to make your exports match the requirements
+of your tax consultants. Or do it the other way round and alter the
+export configuration.
 
 ## Intentions
 
@@ -120,18 +134,18 @@ Those accounts get used to book your outgoing bills. The net amount (excluding
 VAT) is booked to those accounts while the due VAT is book to the "VAT-AT"
 account.
 
-  **VAT-INCOME-AT**
+  **VAT:INCOME-AT**
   
-  **VAT-INCOME-EU**
+  **VAT:INCOME-EU**
   
-  **VAT-INCOME-WW**
+  **VAT:INCOME-WW**
 
 The VAT which is due to get delivered to the fiscal office for every outgoing
 bill you send to a customer has to get booked to an account with this code.
 You will usually not have to charge any VAT to your customers in the EU as
 those are falling within the reverse charge regulation.
 
-  **VAT-AT**
+  **VAT:AT**
 
 When you make purchases or other companie send you a bill you have to book the
 bill to the appropriate 7-class accounts (Abschreibungen) probably using an
@@ -139,16 +153,16 @@ bill to the appropriate 7-class accounts (Abschreibungen) probably using an
 to you usually has to get booked to 25-class account. Depending on 10% or 20%
 different codes should get set for those VAT accounts:
 
-  **VAT-RETURN-20**
+  **VAT:RETURN-20**
   
-  **VAT-RETURN-10**
+  **VAT:RETURN-10**
 
 For purchases or sevices in the EU you will usually get a bill without any
 VAT and a notice about reverse charge regulations. You have to book the purchases
 to an account labeled with the following code. The sum of purchases made in
 the EU is used as basis for assesment (Bemessungsgrundlage).
 
-  **VAT-PURCHASE-EU**
+  **VAT:PURCHASE-EU**
 
 Finally you can (?) book (and counter-book) a VAT for purchases made in the EU
 to an account with the following code.
@@ -160,7 +174,12 @@ I am not sure about whether this is correct or usual this way. The values
 from there are usually not required in the VAT declaration form so this is
 obligatory.
 
-  **VAT-RETURN-EU**
+  **VAT:RETURN-EU**
+
+> **WARNING**: Take care. The code parts have changed from only hyphenated
+> like "VAT-PURCHASE-EU" to a prefix "VAT" (code-key) separated from a value
+> by a semicolon. So in the new version "VAT:PURCHASE-EU" and "VAT:AT" is
+> required.
 
 ## Exporting an VAT statement
 
