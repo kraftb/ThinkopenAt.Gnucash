@@ -113,3 +113,38 @@ AS SELECT
     `to_gnucash`.`transactions`.`description` AS `description`
 from `to_gnucash`.`transactions`;
 
+DROP VIEW `thinkopenat_gnucash_domain_model_billterm`;
+CREATE VIEW
+    `thinkopenat_gnucash_domain_model_billterm`
+AS SELECT
+    `to_gnucash`.`billterms`.`guid` AS `persistence_object_identifier`,
+    `to_gnucash`.`billterms`.`name` AS `name`,
+    `to_gnucash`.`billterms`.`description` AS `description`,
+    `to_gnucash`.`billterms`.`refcount` AS `referenceCount`,
+    `to_gnucash`.`billterms`.`invisible` AS `invisible`,
+    `to_gnucash`.`billterms`.`parent` AS `parent`,
+    `to_gnucash`.`billterms`.`type` AS `billtermType`,
+    `to_gnucash`.`billterms`.`duedays` AS `dueDays`,
+    `to_gnucash`.`billterms`.`discountdays` AS `discountDays`,
+    `to_gnucash`.`billterms`.`discount_num` AS `discount_num`,
+    `to_gnucash`.`billterms`.`discount_denom` AS `discount_denom`,
+    `to_gnucash`.`billterms`.`cutoff` AS `cutoff`
+FROM `to_gnucash`.`billterms`;
+
+
+DROP VIEW `thinkopenat_gnucash_domain_model_currency`;
+CREATE VIEW
+    `thinkopenat_gnucash_domain_model_currency`
+AS SELECT
+    `to_gnucash`.`commodities`.`guid` AS `persistence_object_identifier`,
+    `to_gnucash`.`commodities`.`namespace` AS `namespace`,
+    `to_gnucash`.`commodities`.`mnemonic` AS `mnemonic`,
+    `to_gnucash`.`commodities`.`fullname` AS `fullName`,
+    `to_gnucash`.`commodities`.`cusip` AS `cusip`,
+    `to_gnucash`.`commodities`.`fraction` AS `fraction`,
+    `to_gnucash`.`commodities`.`quote_flag` AS `quoteFlag`,
+    `to_gnucash`.`commodities`.`quote_source` AS `quoteSource`,
+    `to_gnucash`.`commodities`.`quote_tz` AS `quoteTimeZone`
+FROM `to_gnucash`.`commodities`;
+
+

@@ -10,82 +10,82 @@ use TYPO3\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * This domain model represents a currency.
+ * This domain model represents the currency of an invoice
  *
  * @Flow\Entity
  */
-class Currency extends AbstractGnucashModel {
+class Currency {
 
 	/**
-	 * Namespace of the currency
+	 * Namespace of this currency (usually "CURRENCY")
 	 *
 	 * @var string
 	 */	
 	protected $namespace = '';
 
 	/**
-	 * Short mnemonic of the currency
+	 * Mnemonic of this currency
 	 *
 	 * @var string
 	 */	
 	protected $mnemonic = '';
 
 	/**
-	 * Full name of the currency
+	 * Full name for this currency
 	 *
 	 * @var string
 	 */	
-	protected $fullname = '';
+	protected $fullName = '';
 
 	/**
-	 * Cusip for the currency
+	 * Cusip (?)
 	 *
 	 * @var string
 	 */	
 	protected $cusip = '';
 
 	/**
-	 * Fraction for the currency
+	 * Fraction of the currency
 	 *
 	 * @var integer
 	 */	
 	protected $fraction = 0;
 
 	/**
-	 * Quote flag for the currency
+	 * Quote flag (?)
 	 *
-	 * @var integer
+	 * @var boolean
 	 */	
 	protected $quoteFlag = 0;
 
 	/**
-	 * Quote source for the currency
+	 * Quote source (?)
 	 *
 	 * @var string
 	 */	
 	protected $quoteSource = '';
 
 	/**
-	 * Quote TZ for the currency
+	 * Quote timezone
 	 *
 	 * @var string
 	 */	
-	protected $quoteTz = '';
+	protected $quoteTimeZone = '';
 
 
     /**
-     * Returns namespace of the currency
+     * Returns namespace of this currency (usually "CURRENCY")
      *
-     * @return string Namespace of the currency
+     * @return string Namespace of this currency (usually "CURRENCY")
      */
     public function getNamespace() {
         return $this->namespace;
     }
 
     /**
-     * Sets namespace of the currency
+     * Sets namespace of this currency (usually "CURRENCY")
      *
-     * @param string $namespace: Namespace of the currency
+     * @param string $namespace: Namespace of this currency (usually "CURRENCY")
      * @return void
      */
     public function setNamespace($namespace) {
@@ -93,18 +93,18 @@ class Currency extends AbstractGnucashModel {
     }
 
     /**
-     * Returns short mnemonic of the currency
+     * Returns mnemonic of this currency
      *
-     * @return string Short mnemonic of the currency
+     * @return string Mnemonic of this currency
      */
     public function getMnemonic() {
         return $this->mnemonic;
     }
 
     /**
-     * Sets short mnemonic of the currency
+     * Sets mnemonic of this currency
      *
-     * @param string $mnemonic: Short mnemonic of the currency
+     * @param string $mnemonic: Mnemonic of this currency
      * @return void
      */
     public function setMnemonic($mnemonic) {
@@ -112,37 +112,37 @@ class Currency extends AbstractGnucashModel {
     }
 
     /**
-     * Returns full name of the currency
+     * Returns full name for this currency
      *
-     * @return string Full name of the currency
+     * @return string Full name for this currency
      */
-    public function getFullname() {
-        return $this->fullname;
+    public function getFullName() {
+        return $this->fullName;
     }
 
     /**
-     * Sets full name of the currency
+     * Sets full name for this currency
      *
-     * @param string $fullname: Full name of the currency
+     * @param string $fullName: Full name for this currency
      * @return void
      */
-    public function setFullname($fullname) {
-        $this->fullname = $fullname;
+    public function setFullName($fullName) {
+        $this->fullName = $fullName;
     }
 
     /**
-     * Returns cusip for the currency
+     * Returns cusip (?)
      *
-     * @return string Cusip for the currency
+     * @return string Cusip (?)
      */
     public function getCusip() {
         return $this->cusip;
     }
 
     /**
-     * Sets cusip for the currency
+     * Sets cusip (?)
      *
-     * @param string $cusip: Cusip for the currency
+     * @param string $cusip: Cusip (?)
      * @return void
      */
     public function setCusip($cusip) {
@@ -150,18 +150,18 @@ class Currency extends AbstractGnucashModel {
     }
 
     /**
-     * Returns fraction for the currency
+     * Returns fraction of the currency
      *
-     * @return integer Fraction for the currency
+     * @return integer Fraction of the currency
      */
     public function getFraction() {
         return $this->fraction;
     }
 
     /**
-     * Sets fraction for the currency
+     * Sets fraction of the currency
      *
-     * @param integer $fraction: Fraction for the currency
+     * @param integer $fraction: Fraction of the currency
      * @return void
      */
     public function setFraction($fraction) {
@@ -169,18 +169,18 @@ class Currency extends AbstractGnucashModel {
     }
 
     /**
-     * Returns quote flag for the currency
+     * Returns quote flag (?)
      *
-     * @return integer Quote flag for the currency
+     * @return boolean Quote flag (?)
      */
     public function getQuoteFlag() {
         return $this->quoteFlag;
     }
 
     /**
-     * Sets quote flag for the currency
+     * Sets quote flag (?)
      *
-     * @param integer $quoteFlag: Quote flag for the currency
+     * @param boolean $quoteFlag: Quote flag (?)
      * @return void
      */
     public function setQuoteFlag($quoteFlag) {
@@ -188,18 +188,18 @@ class Currency extends AbstractGnucashModel {
     }
 
     /**
-     * Returns quote source for the currency
+     * Returns quote source (?)
      *
-     * @return string Quote source for the currency
+     * @return string Quote source (?)
      */
     public function getQuoteSource() {
         return $this->quoteSource;
     }
 
     /**
-     * Sets quote source for the currency
+     * Sets quote source (?)
      *
-     * @param string $quoteSource: Quote source for the currency
+     * @param string $quoteSource: Quote source (?)
      * @return void
      */
     public function setQuoteSource($quoteSource) {
@@ -207,22 +207,22 @@ class Currency extends AbstractGnucashModel {
     }
 
     /**
-     * Returns quote TZ for the currency
+     * Returns quote timezone
      *
-     * @return string Quote TZ for the currency
+     * @return string Quote timezone
      */
-    public function getQuoteTz() {
-        return $this->quoteTz;
+    public function getQuoteTimeZone() {
+        return $this->quoteTimeZone;
     }
 
     /**
-     * Sets quote TZ for the currency
+     * Sets quote timezone
      *
-     * @param string $quoteTz: Quote TZ for the currency
+     * @param string $quoteTimeZone: Quote timezone
      * @return void
      */
-    public function setQuoteTz($quoteTz) {
-        $this->quoteTz = $quoteTz;
+    public function setQuoteTimeZone($quoteTimeZone) {
+        $this->quoteTimeZone = $quoteTimeZone;
     }
 
 }

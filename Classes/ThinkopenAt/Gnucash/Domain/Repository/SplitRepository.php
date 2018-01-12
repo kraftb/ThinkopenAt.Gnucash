@@ -48,8 +48,8 @@ class SplitRepository extends AbstractGnucashRepository {
 		);
         $query->setOrderings($orderings);
 
-        $constraints[] = $query->greaterThanOrEqual('transaction.postDate', $begin);
-        $constraints[] = $query->lessThanOrEqual('transaction.postDate', $end);
+        $constraints[] = $query->greaterThanOrEqual('transaction.postDate', clone($begin));
+        $constraints[] = $tmp = $query->lessThan('transaction.postDate', clone($end));
 		if ($accounts instanceof \TYPO3\Flow\Persistence\QueryResultInterface) {
         	$constraints[] = $query->in('account', $accounts->toArray());
 		} else {

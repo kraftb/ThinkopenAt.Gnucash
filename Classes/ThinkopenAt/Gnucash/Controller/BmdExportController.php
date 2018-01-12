@@ -30,6 +30,8 @@ class BmdExportController extends AbstractBmdExportController {
      * @var array
      */
     protected $exportConfiguration = [
+        'transfer-28000-200' => [
+		],
         'category-70400' => [
 		],
         'category-28950' => [
@@ -141,16 +143,51 @@ class BmdExportController extends AbstractBmdExportController {
      * @var array
      */
     protected $exportMapping = [
+        'transfer-28000-200' => [
+				// TODO
+                'satzart' => 0,
+                'konto' => [
+                    'field' => 'otherSplit.account.code',
+                    'pipePart' => 'BMD',
+				],
+                'gkonto' => [
+                    'field' => 'account.code',
+                    'pipePart' => 'BMD',
+                ],
+                'belegnr' => [
+                    'field' => 'transaction.number',
+				],
+                'belegdatum' => [
+                    'field' => 'transaction.postDate',
+                ],
+                'buchsymbol' => 'BK',
+                'buchcode' => [
+					'field' => 'quantity',
+					'sign' => [
+						'+' => '1',
+						'-' => '2',
+					],
+				],
+                'betrag' => [
+                    'field' => 'quantity',
+                    'factor' => -1,
+                    'numberFormat' => array(2, ',', ''),
+                ],
+                'text' => [
+					'field' => 'transaction.description',
+					'pipePart' => 0,
+                ],
+		],
         'category-70400' => [
                 'satzart' => 0,
                 'konto' => [
                     'field' => 'account.code',
                     'pipePart' => 'BMD',
                 ],
-                'gkonto' => self::bmdSplitAccount;
+                'gkonto' => self::bmdSplitAccount,
                 'belegnr' => [
                     'field' => 'transaction.number',
-				]
+				],
                 'belegdatum' => [
                     'field' => 'transaction.postDate',
                 ],

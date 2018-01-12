@@ -24,6 +24,13 @@ class StandardController extends AbstractGnucashController {
      */
     protected $entityManager;
 
+	/**
+	 * Instance of the "misc" utility
+	 *
+	 * @Flow\Inject
+	 * @var \ThinkopenAt\Gnucash\Utility\Misc
+	 */
+	protected $misc = NULL;
 
 	/**
 	 * @Flow\Inject
@@ -119,14 +126,19 @@ class StandardController extends AbstractGnucashController {
             throw new \Exception('Year and quarter of the report have to get passed.');
         }
 
-        $accountsIncomeAt = $this->accountRepository->findChildrenByCode('VAT-INCOME-AT');
-        $accountsIncomeEu = $this->accountRepository->findChildrenByCode('VAT-INCOME-EU');
-        $accountsIncomeWw = $this->accountRepository->findChildrenByCode('VAT-INCOME-WW');
-        $accountsVat20 = $this->accountRepository->findByCode('VAT-RETURN-20');
-        $accountsVat10 = $this->accountRepository->findByCode('VAT-RETURN-10');
-        $accountsVatEu = $this->accountRepository->findByCode('VAT-RETURN-EU');
-        $accountsPurchaseEu = $this->accountRepository->findByCode('PURCHASE-EU');
-        $accountsVatAt = $this->accountRepository->findByCode('VAT-AT');
+        $accountsIncomeAt = $this->accountRepository->findChildrenByCode('VAT:INCOME-AT');
+        $accountsIncomeEu = $this->accountRepository->findChildrenByCode('VAT:INCOME-EU');
+        $accountsIncomeWw = $this->accountRepository->findChildrenByCode('VAT:INCOME-WW');
+
+		$accountsVat20 = $this->accountRepository->findWithCodeElement('VAT:RETURN-20');
+		$accountsVat10 = $this->accountRepository->findWithCodeElement('VAT:RETURN-10');
+		$accountsVatEu = $this->accountRepository->findWithCodeElement('VAT:RETURN-EU');
+
+		$accountsPurchaseEu = $this->accountRepository->findWithCodeElement('PURCHASE:EU');
+		// TODO: Eventually retrieve all children
+		// $accountsPurchaseEu = $this->accountRepository->findChildren($accountsPurchaseEu->getFirst());
+
+		$accountsVatAt = $this->accountRepository->findWithCodeElement('VAT:AT');
 
         $begin = $this->getQuarterStart($year, $quarter);
         $end = $this->getQuarterEnd($year, $quarter);
@@ -139,6 +151,14 @@ class StandardController extends AbstractGnucashController {
         $splitsVatEu = $this->splitRepository->findByPostDateRangeAndAccount($begin, $end, $accountsVatEu);
         $splitsVatAt = $this->splitRepository->findByPostDateRangeAndAccount($begin, $end, $accountsVatAt);
         $splitsPurchaseEu = $this->splitRepository->findByPostDateRangeAndAccount($begin, $end, $accountsPurchaseEu);
+/*
+foreach ($splitsPurchaseEu as $test) {
+	echo $test->getTransaction()->getDescription() . ": " . $test->getValue() . " | ";
+}
+*/
+/*
+exit();
+*/
 
         $this->view->assign('incomeAt', $splitsIncomeAt);
         $this->view->assign('incomeEu', $splitsIncomeEu);
@@ -156,7 +176,8 @@ class StandardController extends AbstractGnucashController {
         $this->view->assign('now', new \TYPO3\Flow\Utility\Now());
         $this->view->assign('begin', $begin);
         $this->view->assign('end', $end);
-        $this->view->assign('endQuarter', $end->modify('-1 day'));
+		$endQuarter = clone($end);
+        $this->view->assign('endQuarter', $endQuarter->modify('-1 day'));
         $this->view->assign('year', $year);
         $this->view->assign('quarter', $quarter);
         $this->view->assign('company', $company);
@@ -201,6 +222,8 @@ class StandardController extends AbstractGnucashController {
 	 * @return void
 	 */
 	public function listInvoicesAction() {
+//		$invoices = [ $this->invoiceRepository->findByIdentifier('dc98f108df3fa5800bbbbaa2a94e14e7') ];
+//		$invoices = [ $this->invoiceRepository->findByIdentifier('20c74b6bb6359d6c953631ea7b91faad') ];
 		$invoices = $this->invoiceRepository->findAll();
         $this->view->assign('invoices', $invoices);
 	}
@@ -235,10 +258,9 @@ class StandardController extends AbstractGnucashController {
         $serviceEnd = $newBill->getServiceEnd();
 
         $notes = 'LZ:' . $serviceBegin->format('Y-m-d') . '~' . $serviceEnd->format('Y-m-d');
-        $invoice->setNotes($notes);
+		$invoice->setNotes($notes);
 
-        $this->persistInvoice($invoice);
-
+		$this->persistInvoice($invoice);
         $this->newInvoice = $this->invoiceRepository->findByIdentifier((string)$invoice);
 
         $this->forward('billCustomer');
@@ -489,6 +511,14 @@ class StandardController extends AbstractGnucashController {
         $lot->setPersistenceObjectIdentifier($newUid);
 
         $currencyShort = $invoice->getCurrency()->getMnemonic();
+
+		// New "style": One posting account for each customer.
+		// TODO: This currently is based on BMD account linkage.
+		$lotAccount = $this->getPostAccountForInvoice($invoice);
+
+		/**
+		// Old "style": Only one posting account for all invoices.
+		// This way it's harder to determine if there are any unpaid invoices.
         $lotAccounts = $this->accountRepository->findByCode('POST-INVOICE:' . $currencyShort);
 
         if (count($lotAccounts) > 1) {
@@ -499,6 +529,8 @@ class StandardController extends AbstractGnucashController {
         }
 
         $lotAccount = $lotAccounts->getFirst();
+		*/
+
         $lot->setAccount($lotAccount);
         $lot->setIsClosed(-1);
 
@@ -523,7 +555,12 @@ class StandardController extends AbstractGnucashController {
         $transaction->setNumber($invoice->getId());
         $transaction->setPostDate($invoice->getOpened());
         $transaction->setEnterDate(new \TYPO3\Flow\Utility\Now());
-        $transaction->setDescription($owner->getName());
+		$invoiceTransactionDescription = $owner->getName();
+
+		// This is a "think-open specific" addition.
+		$invoiceTransactionDescription .= '|RNR:' . $invoice->getId();
+
+        $transaction->setDescription($invoiceTransactionDescription);
 
         return $transaction;
     }
@@ -537,12 +574,19 @@ class StandardController extends AbstractGnucashController {
      */
     protected function generateInvoiceSplits(\ThinkopenAt\Gnucash\Domain\Model\Invoice $invoice, array $sums) {
         $accountIncome = $this->getIncomeAccountForInvoice($invoice);
+		$parent = $accountIncome->getParent();
+		$code = $parent->getCode();
+		$vatPart = $this->misc->getPipePart('VAT', $code);
+        $accountVat = null;
 
-        $accountVat = $this->accountRepository->findByCode('VAT-AT');
-        if (count($accountVat) !== 1) {
-            throw new \Exception('Only one account must have code "VAT-AT" set!');
-        }
-        $accountVat = $accountVat->getFirst();
+		if ($vatPart === 'INCOME-AT') {
+        	$accountVat = $this->accountRepository->findWithCodeElement('VAT:AT');
+			$cnt = count($accountVat);
+			if ($cnt !== 1) {
+				throw new \Exception('Only one account must have code "VAT-AT" set but ' . $cnt . ' have been found!');
+			}
+			$accountVat = $accountVat->getFirst();
+		}
 
         $splitPost = $this->generateInvoiceSplitBase($invoice);
         $splitPost->setAccount($invoice->getAccount());
@@ -556,16 +600,20 @@ class StandardController extends AbstractGnucashController {
         $splitIncome->setValue($invNet);
         $splitIncome->setQuantity($invNet);
 
-        $splitVat = $this->generateInvoiceSplitBase($invoice);
-        $splitVat->setAccount($accountVat);
-		$invVat = $sums['vat']->negate();
-        $splitVat->setValue($invVat);
-        $splitVat->setQuantity($invVat);
-
         $splits = $this->objectManager->get(ArrayCollection::class);
         $splits->add($splitPost);
         $splits->add($splitIncome);
-        $splits->add($splitVat);
+
+		// If this is a domestic invoice a split for the local VAT has to be added
+		if ($accountVat !== null) {
+			$splitVat = $this->generateInvoiceSplitBase($invoice);
+			$splitVat->setAccount($accountVat);
+			$invVat = $sums['vat']->negate();
+			$splitVat->setValue($invVat);
+			$splitVat->setQuantity($invVat);
+			// Add VAT split to splits
+        	$splits->add($splitVat);
+		}
 
         return $splits;
     }
@@ -594,6 +642,28 @@ class StandardController extends AbstractGnucashController {
         }
         return $accountIncome->getFirst();
     }
+
+	/**
+	 * Determines the correct account for posting an invoice.
+	 * TODO: This is currently bound to the "BMD" code.
+	 * 
+     * @param \ThinkopenAt\Gnucash\Domain\Model\Invoice $invoice: The invoice for which to retrieve posting account
+     * @return \ThinkopenAt\Gnucash\Domain\Model\Account The posting account for the passed invoice
+	 */
+	protected function getPostAccountForInvoice($invoice) {
+		$accountIncome = $this->getIncomeAccountForInvoice($invoice);
+		$code = $accountIncome->getCode();
+		$bmdCode = $this->misc->getPipePart('BMD', $code);
+		$accounts = $this->accountRepository->findWithCodeElement('BMD:' . $bmdCode);
+		foreach ($accounts as $account) {
+			$parent = $account->getParent();
+			$parentCode = $parent->getCode();
+			if ($parentCode === 'POST-INVOICE:EUR') {
+				return $account;
+			}
+		}
+		return null;
+	}
 
     /**
      * Generate a basic split instance which is to be used as common base for

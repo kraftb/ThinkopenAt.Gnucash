@@ -1,4 +1,5 @@
 {namespace gc=ThinkopenAt\Gnucash\ViewHelpers}
+{namespace dbg=ThinkopenAt\Debug\ViewHelpers}
 
 <f:layout name="ListInvoices" />
 
@@ -70,19 +71,43 @@
 		<gc:format.amount><gc:accumulate.get key="{invoice.id}" /></gc:format.amount>
 		&euro;
 	</td>
-	<td class="entry-amount">
-		<gc:format.amount><gc:math><gc:accumulate.get key="{invoice.id}" /> * 0.20</gc:math></gc:format.amount>
-		&euro;
-	</td>
-	<td class="entry-amount">
-		<gc:format.amount><gc:math><gc:accumulate.get key="{invoice.id}" /> * 1.20</gc:math></gc:format.amount>
-		&euro;
-	</td>
+
+	<f:if condition="{f:render(section: 'hasVatCodeAt', arguments: '{invoice: invoice}')}">
+		<f:then>
+
+			<td class="entry-amount">
+				<gc:format.amount><gc:math><gc:accumulate.get key="{invoice.id}" /> * 0.20</gc:math></gc:format.amount>
+				&euro;
+			</td>
+			<td class="entry-amount">
+				<gc:format.amount><gc:math><gc:accumulate.get key="{invoice.id}" /> * 1.20</gc:math></gc:format.amount>
+				&euro;
+			</td>
+		</f:then>
+
+		<f:else>
+			<td class="entry-amount">
+				EU reverse charge
+			</td>
+			<td class="entry-amount">
+				<gc:format.amount><gc:accumulate.get key="{invoice.id}" /></gc:format.amount>
+				&euro;
+			</td>
+		</f:else>
+	</f:if>
 	<td>
 	</td>
 </f:section>
 
 
+<!--
+	This section is used to determine whether any of the
+	transaction splits has an account with a code of "VAT:AT"
+-->
+<f:section name="hasVatCodeAt"><f:for each="{invoice.transaction.splits}" as="split"><f:if condition="{code: '{split.account.code -> gc:codePart(code: \'VAT\')}'}=={code: 'AT'}">1</f:if></f:for></f:section>
+
+
+<gc:codePart code="VAT">{split.account.code}</gc:codePart>
 
 <f:section name="InvoiceEntry">
 	<td class="entry-index">{current.cycle}</td>

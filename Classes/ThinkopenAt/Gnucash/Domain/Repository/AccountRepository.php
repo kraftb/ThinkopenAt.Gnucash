@@ -36,6 +36,27 @@ class AccountRepository extends AbstractGnucashRepository {
     }
 
     /**
+     * Finds all accounts whose parent has assigned a specific code
+     *
+     * @param string $code: The code which has to get matched
+     * @param \TYPO3\Flow\Persistence\QueryResultInterface Matching accounts
+     */
+    public function findChildren($parent) {
+        $query = $this->createQuery();
+		$constraints = array();
+
+		$orderings = array(
+			'name' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_ASCENDING,
+		);
+		$query->setOrderings($orderings);
+
+		$constraints[] = $query->equals('parent.Persistence_Object_Identifier', $parent);
+
+		$query->matching($query->logicalAnd($constraints));
+		return $query->execute();
+    }
+
+    /**
      * Finds accounts which contain the given code-element
      *
      * @param string $code: The code element which has to get matched
