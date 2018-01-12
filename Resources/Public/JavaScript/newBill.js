@@ -1,24 +1,25 @@
 
 // Bind buttons and drop down boxes onchange
 
-function calculateNet(o) {
-    console.log("test 123");
-    var cont = $(this).parent().parent();
-    var amount = cont.find('.bill-entry-amount').val();
-    var price = cont.find('.bill-entry-price').val();
-    amount = parseFloat(amount);
-    if (isNaN(amount)) {
-        amount = 1;
-        cont.find('.bill-entry-amount').val(1);
+function Form_Field_getFloat(obj, selector) {
+	var f = obj.querySelector(selector);
+	var val = f.value;
+    val = parseFloat(val);
+    if (isNaN(val)) {
+        val = 1;
+        f.value = 1;
     }
-    price = parseFloat(price);
-    if (isNaN(price)) {
-        alert("Price is not a valid number!");
-        return false;
-    }
+	return val;
+}
+
+
+function calculateNet(e) {
+	var cont = e.target.parentNode.parentNode;
+	var amount = Form_Field_getFloat(cont, '.bill-entry-amount');
+	var price = Form_Field_getFloat(cont, '.bill-entry-price');
     var net = price * amount;
     var netString = formatAmount(net, 2);
-    cont.find('.bill-entry-net').val(netString);
+    cont.querySelector('.bill-entry-net').value = netString;
 }
 
 function formatAmount(value, decimals) {
@@ -44,9 +45,9 @@ function alterPriceUnit() {
 function alterAmountUnit() {
 }
 
-$(document).ready(function() {
-	$('.calculateNet').bind('click', calculateNet);
-	$('.bill-entry-priceUnit').bind('click', alterPriceUnit);
-	$('.bill-entry-amountUnit').bind('click', alterAmountUnit);
+window.addEventListener('load', function( ) {
+	connectEventsByClassName('.calculateNet', ['click'], calculateNet);
+	connectEventsByClassName('.bill-entry-priceUnit', ['click'], alterPriceUnit);
+	connectEventsByClassName('.bill-entry-amountUnit', ['click'], alterAmountUnit);
 });
 
